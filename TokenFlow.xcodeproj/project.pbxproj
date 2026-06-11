@@ -1,0 +1,542 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2BC66045E4B404EF0F8053ED /* DisplayFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */; };
+		2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
+		3C811CB6F60F632BDA3883FD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
+		53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */; };
+		626C2C2702319860994A2636 /* TokenNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9B386DC5A1A1131BE71F9C /* TokenNotificationManager.swift */; };
+		6A95B0A8179C623637E2E0B3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B43A3593E351E51AB786A /* SettingsView.swift */; };
+		6B472D3CD3D2317C999328B3 /* TokenUsageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD0A6AFACA971E76C28B1C56 /* TokenUsageStore.swift */; };
+		853BD88DFCADACD43D7F4E8A /* CodexAuthReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26BAF81906885CA4F7F7E480 /* CodexAuthReader.swift */; };
+		8C76796D2492B03731947524 /* TokenFlowIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = D5D66B63B10DFC287ADBD7D3 /* TokenFlowIcon.icns */; };
+		8F996BD731DE3E30A2A38EB3 /* SharedSnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */; };
+		9FA5F30124BF71523C94DC07 /* TokenFlowWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 8C337A79C2F1C9333386820F /* TokenFlowWidgets.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A98E9B0537BD5A753C43EFF7 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6A38DB0B39C4BDE615487C64 /* ContentView.swift */; };
+		C07FE75962DE9EAD065610FC /* TokenFlowWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE5922CE07C37AAB2FA7B9F /* TokenFlowWidgets.swift */; };
+		D807B71F7C38594B62AD541C /* TokenFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0C8487BA476D8567112FE /* TokenFlowApp.swift */; };
+		DEB6D6AC8EEC5A4F35E89CF2 /* CodexUsageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC2A1DDB24999126DCF489E /* CodexUsageReader.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CDB63246CBBAE4CB95B891A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8ECD0A5E627F762EFC8C66E3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 696599035A9638F8531089BF;
+			remoteInfo = TokenFlowWidgets;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9F285A372857882C9C585C66 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				9FA5F30124BF71523C94DC07 /* TokenFlowWidgets.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		023B078CE521B2B6A1C7BC8F /* TokenFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TokenFlow.entitlements; sourceTree = "<group>"; };
+		26BAF81906885CA4F7F7E480 /* CodexAuthReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAuthReader.swift; sourceTree = "<group>"; };
+		4A9B386DC5A1A1131BE71F9C /* TokenNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenNotificationManager.swift; sourceTree = "<group>"; };
+		53B0C8487BA476D8567112FE /* TokenFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFlowApp.swift; sourceTree = "<group>"; };
+		69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedSnapshotStore.swift; sourceTree = "<group>"; };
+		6A38DB0B39C4BDE615487C64 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		6FC2A1DDB24999126DCF489E /* CodexUsageReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexUsageReader.swift; sourceTree = "<group>"; };
+		8C337A79C2F1C9333386820F /* TokenFlowWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TokenFlowWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FE5922CE07C37AAB2FA7B9F /* TokenFlowWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFlowWidgets.swift; sourceTree = "<group>"; };
+		9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayFormatters.swift; sourceTree = "<group>"; };
+		C8E884E5B0CB90804A5F62FA /* TokenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModels.swift; sourceTree = "<group>"; };
+		CD0A6AFACA971E76C28B1C56 /* TokenUsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenUsageStore.swift; sourceTree = "<group>"; };
+		CD398F61545764963A93913F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		D5D66B63B10DFC287ADBD7D3 /* TokenFlowIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = TokenFlowIcon.icns; sourceTree = "<group>"; };
+		D86B43A3593E351E51AB786A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D969CA1843B47A8549FA992C /* TokenFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC5809B10F550331765AE155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		EF4B31F7886AC6828ADFE7C7 /* TokenFlowWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TokenFlowWidgets.entitlements; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0F54200D7FBFC3DB26FDB7C3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D969CA1843B47A8549FA992C /* TokenFlow.app */,
+				8C337A79C2F1C9333386820F /* TokenFlowWidgets.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		13CDC2E026759F672AEEE7BD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6A38DB0B39C4BDE615487C64 /* ContentView.swift */,
+				D86B43A3593E351E51AB786A /* SettingsView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		38A89408270D785D16FF4062 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				53B0C8487BA476D8567112FE /* TokenFlowApp.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		396243F07C613F65A6FC0463 /* Support */ = {
+			isa = PBXGroup;
+			children = (
+				9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */,
+			);
+			path = Support;
+			sourceTree = "<group>";
+		};
+		3F1F5424B52FFE44C484F69B = {
+			isa = PBXGroup;
+			children = (
+				B8BB1363FEF58920FFBEA904 /* TokenFlowApp */,
+				C34158462841F65BA25EBB15 /* TokenFlowShared */,
+				CD3734499DE9BC360E432F79 /* TokenFlowWidgets */,
+				0F54200D7FBFC3DB26FDB7C3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		4B5FD11B602645FCDD423DB9 /* Stores */ = {
+			isa = PBXGroup;
+			children = (
+				CD0A6AFACA971E76C28B1C56 /* TokenUsageStore.swift */,
+			);
+			path = Stores;
+			sourceTree = "<group>";
+		};
+		6BA0C036D0A104B183924FAA /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				26BAF81906885CA4F7F7E480 /* CodexAuthReader.swift */,
+				6FC2A1DDB24999126DCF489E /* CodexUsageReader.swift */,
+				4A9B386DC5A1A1131BE71F9C /* TokenNotificationManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		B8BB1363FEF58920FFBEA904 /* TokenFlowApp */ = {
+			isa = PBXGroup;
+			children = (
+				CD398F61545764963A93913F /* Info.plist */,
+				023B078CE521B2B6A1C7BC8F /* TokenFlow.entitlements */,
+				38A89408270D785D16FF4062 /* App */,
+				F13EE71425341009AE657C96 /* Resources */,
+				6BA0C036D0A104B183924FAA /* Services */,
+				4B5FD11B602645FCDD423DB9 /* Stores */,
+				396243F07C613F65A6FC0463 /* Support */,
+				13CDC2E026759F672AEEE7BD /* Views */,
+			);
+			path = TokenFlowApp;
+			sourceTree = "<group>";
+		};
+		C34158462841F65BA25EBB15 /* TokenFlowShared */ = {
+			isa = PBXGroup;
+			children = (
+				69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */,
+				C8E884E5B0CB90804A5F62FA /* TokenModels.swift */,
+			);
+			path = TokenFlowShared;
+			sourceTree = "<group>";
+		};
+		CD3734499DE9BC360E432F79 /* TokenFlowWidgets */ = {
+			isa = PBXGroup;
+			children = (
+				DC5809B10F550331765AE155 /* Info.plist */,
+				EF4B31F7886AC6828ADFE7C7 /* TokenFlowWidgets.entitlements */,
+				8FE5922CE07C37AAB2FA7B9F /* TokenFlowWidgets.swift */,
+			);
+			path = TokenFlowWidgets;
+			sourceTree = "<group>";
+		};
+		F13EE71425341009AE657C96 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				D5D66B63B10DFC287ADBD7D3 /* TokenFlowIcon.icns */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		696599035A9638F8531089BF /* TokenFlowWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CBDAD5A939E0CBDED100E07F /* Build configuration list for PBXNativeTarget "TokenFlowWidgets" */;
+			buildPhases = (
+				6C51D8B78CC265A707EF2B60 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TokenFlowWidgets;
+			packageProductDependencies = (
+			);
+			productName = TokenFlowWidgets;
+			productReference = 8C337A79C2F1C9333386820F /* TokenFlowWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		FAE654E440A1604ABF5899B9 /* TokenFlow */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3BE2ECD5AF7D4D446A51122B /* Build configuration list for PBXNativeTarget "TokenFlow" */;
+			buildPhases = (
+				F17BB439CA53CF14864B693B /* Sources */,
+				0559497EC12655E272A26D15 /* Resources */,
+				9F285A372857882C9C585C66 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DFC01147E63D14588056D68D /* PBXTargetDependency */,
+			);
+			name = TokenFlow;
+			packageProductDependencies = (
+			);
+			productName = TokenFlow;
+			productReference = D969CA1843B47A8549FA992C /* TokenFlow.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8ECD0A5E627F762EFC8C66E3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					696599035A9638F8531089BF = {
+						DevelopmentTeam = MKAFV9VL9V;
+						ProvisioningStyle = Automatic;
+					};
+					FAE654E440A1604ABF5899B9 = {
+						DevelopmentTeam = MKAFV9VL9V;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 2BB3FF4D332487947AF8CD3E /* Build configuration list for PBXProject "TokenFlow" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 3F1F5424B52FFE44C484F69B;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FAE654E440A1604ABF5899B9 /* TokenFlow */,
+				696599035A9638F8531089BF /* TokenFlowWidgets */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0559497EC12655E272A26D15 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C76796D2492B03731947524 /* TokenFlowIcon.icns in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6C51D8B78CC265A707EF2B60 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F996BD731DE3E30A2A38EB3 /* SharedSnapshotStore.swift in Sources */,
+				C07FE75962DE9EAD065610FC /* TokenFlowWidgets.swift in Sources */,
+				3C811CB6F60F632BDA3883FD /* TokenModels.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		F17BB439CA53CF14864B693B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				853BD88DFCADACD43D7F4E8A /* CodexAuthReader.swift in Sources */,
+				DEB6D6AC8EEC5A4F35E89CF2 /* CodexUsageReader.swift in Sources */,
+				A98E9B0537BD5A753C43EFF7 /* ContentView.swift in Sources */,
+				2BC66045E4B404EF0F8053ED /* DisplayFormatters.swift in Sources */,
+				6A95B0A8179C623637E2E0B3 /* SettingsView.swift in Sources */,
+				53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */,
+				D807B71F7C38594B62AD541C /* TokenFlowApp.swift in Sources */,
+				2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */,
+				626C2C2702319860994A2636 /* TokenNotificationManager.swift in Sources */,
+				6B472D3CD3D2317C999328B3 /* TokenUsageStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DFC01147E63D14588056D68D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 696599035A9638F8531089BF /* TokenFlowWidgets */;
+			targetProxy = CDB63246CBBAE4CB95B891A9 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3353A32805139177A03AB3F1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = TokenFlowApp/TokenFlow.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TokenFlowApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adriendonot.TokenFlow;
+				PRODUCT_NAME = TokenFlow;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4BF42A253204F42999EF0977 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = TokenFlowWidgets/TokenFlowWidgets.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TokenFlowWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adriendonot.TokenFlow.widgets;
+				PRODUCT_NAME = TokenFlowWidgets;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		5EFFFA4DF8A6217B59B8E34E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				CODE_SIGN_ENTITLEMENTS = TokenFlowApp/TokenFlow.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TokenFlowApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adriendonot.TokenFlow;
+				PRODUCT_NAME = TokenFlow;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		6D1A85877D3EE57F5EA7DC59 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = TokenFlowWidgets/TokenFlowWidgets.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = TokenFlowWidgets/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.adriendonot.TokenFlow.widgets;
+				PRODUCT_NAME = TokenFlowWidgets;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		8CCA63888BA446E37F442899 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = MKAFV9VL9V;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		FA3C44893C48FF0B3CB80ADA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = MKAFV9VL9V;
+				ENABLE_DEBUG_DYLIB = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2BB3FF4D332487947AF8CD3E /* Build configuration list for PBXProject "TokenFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CCA63888BA446E37F442899 /* Debug */,
+				FA3C44893C48FF0B3CB80ADA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		3BE2ECD5AF7D4D446A51122B /* Build configuration list for PBXNativeTarget "TokenFlow" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3353A32805139177A03AB3F1 /* Debug */,
+				5EFFFA4DF8A6217B59B8E34E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CBDAD5A939E0CBDED100E07F /* Build configuration list for PBXNativeTarget "TokenFlowWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4BF42A253204F42999EF0977 /* Debug */,
+				6D1A85877D3EE57F5EA7DC59 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8ECD0A5E627F762EFC8C66E3 /* Project object */;
+}

@@ -1,0 +1,9 @@
+.DS_Store
+build/
+build-dist/
+DerivedData/
+*.xcuserdata/
+*.xcuserstate
+xcuserdata/
+.codex/
+design-assets/app-icons/backups/
