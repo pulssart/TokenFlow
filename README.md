@@ -1,0 +1,42 @@
+# TokenFlow
+
+TokenFlow is a small macOS app for tracking Codex token usage from local Codex history.
+
+![TokenFlow dashboard](docs/tokenflow-screenshot.png)
+
+## What it shows
+
+TokenFlow gives you a quick view of your current Codex session, recent sessions, and weekly usage.
+
+It tracks input, cached input, output, and reasoning tokens. The app also shows reset times when Codex exposes quota information.
+
+## Features
+
+• Current Codex session usage
+• Weekly quota usage
+• Recent session list
+• Token breakdown for input, cache, output, and reasoning
+• Native macOS widgets
+• Optional menu bar status item
+• Optional usage notifications
+• First run onboarding
+
+## Setup
+
+TokenFlow reads local Codex data, so Codex needs to be signed in on the machine.
+
+Open Settings in the app, then use the Codex login action if needed. The app can also show the onboarding flow again from Settings.
+
+## Build and run
+
+```bash
+./script/build_and_run.sh --verify
+```
+
+## Release build
+
+```bash
+./script/release.sh
+```
+
+The release script builds the app, signs it with Developer ID, creates a DMG, and submits it to Apple notarization when the `TokenFlow` notary profile exists in Keychain.
