@@ -21,6 +21,12 @@ It tracks input, cached input, output, and reasoning tokens. The app also shows 
 • Optional usage notifications
 • First run onboarding
 
+## Download
+
+Download the signed and notarized DMG from the latest GitHub release:
+
+https://github.com/pulssart/TokenFlow/releases/download/v1.0/TokenFlow-1.0.dmg
+
 ## Setup
 
 TokenFlow reads local Codex data, so Codex needs to be signed in on the machine.
