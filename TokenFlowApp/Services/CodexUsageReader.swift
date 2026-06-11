@@ -3,6 +3,11 @@ import Foundation
 struct CodexUsageReader {
     private let authReader = CodexAuthReader()
     private let calendar = Calendar(identifier: .iso8601)
+    private let fileLookbackDays = 8
+    private let maximumSessionFiles = 80
+    private let metadataReadLimit = 64 * 1024
+    private let initialTailReadLimit: UInt64 = 256 * 1024
+    private let maximumTailReadLimit: UInt64 = 4 * 1024 * 1024
 
     func readSnapshot() throws -> TokenFlowSnapshot {
         let home = FileManager.default.homeDirectoryForCurrentUser
@@ -38,9 +43,9 @@ struct CodexUsageReader {
             codex.appendingPathComponent("sessions"),
             codex.appendingPathComponent("archived_sessions")
         ]
-        let cutoff = Date().addingTimeInterval(-60 * 60 * 24 * 14)
+        let cutoff = Date().addingTimeInterval(-60 * 60 * 24 * Double(fileLookbackDays))
 
-        return roots.flatMap { root -> [URL] in
+        let candidates = roots.flatMap { root -> [SessionFileCandidate] in
             guard let enumerator = FileManager.default.enumerator(
                 at: root,
                 includingPropertiesForKeys: [.contentModificationDateKey],
@@ -50,10 +55,15 @@ struct CodexUsageReader {
             return enumerator.compactMap { item in
                 guard let url = item as? URL, url.pathExtension == "jsonl" else { return nil }
                 let values = try? url.resourceValues(forKeys: [.contentModificationDateKey])
-                if let modified = values?.contentModificationDate, modified < cutoff { return nil }
-                return url
+                guard let modified = values?.contentModificationDate, modified >= cutoff else { return nil }
+                return SessionFileCandidate(url: url, modified: modified)
             }
         }
+
+        return candidates
+            .sorted { $0.modified > $1.modified }
+            .prefix(maximumSessionFiles)
+            .map(\.url)
     }
 
     private func readSessionIndex(at url: URL) -> [String: String] {
@@ -69,36 +79,81 @@ struct CodexUsageReader {
     }
 
     private func readSessionFile(_ url: URL, titles: [String: String]) -> SessionAccumulator? {
-        guard let content = try? String(contentsOf: url, encoding: .utf8) else { return nil }
         var session = SessionAccumulator(id: idFromFileName(url), title: url.deletingPathExtension().lastPathComponent, path: "")
 
-        for line in content.split(separator: "\n") {
-            guard let data = String(line).data(using: .utf8),
-                  let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                  let type = object["type"] as? String else { continue }
-
-            if type == "session_meta", let payload = object["payload"] as? [String: Any] {
-                if let id = payload["id"] as? String {
-                    session.id = id
-                    session.title = titles[id] ?? session.title
-                }
-                if let cwd = payload["cwd"] as? String {
-                    session.path = cwd
-                }
-            }
-
-            if type == "event_msg",
-               let payload = object["payload"] as? [String: Any],
-               payload["type"] as? String == "token_count",
-               let event = TokenEvent(object: object) {
-                session.latestEvent = event
-            }
+        if let metadata = readSessionMetadata(from: url) {
+            session.id = metadata.id ?? session.id
+            session.title = metadata.id.flatMap { titles[$0] } ?? session.title
+            session.path = metadata.path ?? session.path
         }
 
         if let title = titles[session.id] {
             session.title = title
         }
+        session.latestEvent = readLatestTokenEvent(from: url)
         return session
+    }
+
+    private func readSessionMetadata(from url: URL) -> (id: String?, path: String?)? {
+        guard let handle = try? FileHandle(forReadingFrom: url) else { return nil }
+        defer { try? handle.close() }
+
+        let data = handle.readData(ofLength: metadataReadLimit)
+        let content = String(decoding: data, as: UTF8.self)
+
+        for line in content.split(separator: "\n") {
+            guard let object = parseJSONObject(line),
+                  object["type"] as? String == "session_meta",
+                  let payload = object["payload"] as? [String: Any] else { continue }
+            return (payload["id"] as? String, payload["cwd"] as? String)
+        }
+
+        return nil
+    }
+
+    private func readLatestTokenEvent(from url: URL) -> TokenEvent? {
+        guard let handle = try? FileHandle(forReadingFrom: url) else { return nil }
+        defer { try? handle.close() }
+
+        guard let size = try? handle.seekToEnd(), size > 0 else { return nil }
+        let cappedSize = min(size, maximumTailReadLimit)
+        var bytesToRead = min(size, initialTailReadLimit)
+
+        while bytesToRead <= cappedSize {
+            let offset = size - bytesToRead
+            do {
+                try handle.seek(toOffset: offset)
+                let data = handle.readDataToEndOfFile()
+                if let event = latestTokenEvent(in: data) {
+                    return event
+                }
+            } catch {
+                return nil
+            }
+
+            if bytesToRead == cappedSize { break }
+            bytesToRead = min(bytesToRead * 2, cappedSize)
+        }
+
+        return nil
+    }
+
+    private func latestTokenEvent(in data: Data) -> TokenEvent? {
+        let content = String(decoding: data, as: UTF8.self)
+        for line in content.split(separator: "\n").reversed() {
+            guard line.contains("\"token_count\""),
+                  let object = parseJSONObject(line),
+                  object["type"] as? String == "event_msg",
+                  let payload = object["payload"] as? [String: Any],
+                  payload["type"] as? String == "token_count" else { continue }
+            return TokenEvent(object: object)
+        }
+        return nil
+    }
+
+    private func parseJSONObject(_ line: Substring) -> [String: Any]? {
+        guard let data = String(line).data(using: .utf8) else { return nil }
+        return try? JSONSerialization.jsonObject(with: data) as? [String: Any]
     }
 
     private func buildWeeklySnapshot(from sessions: [SessionAccumulator], latestLimit: LimitSnapshot?) -> WeeklyUsageSnapshot {
@@ -151,6 +206,11 @@ struct CodexUsageReader {
         formatter.dateFormat = "EEE"
         return formatter
     }()
+}
+
+private struct SessionFileCandidate {
+    var url: URL
+    var modified: Date
 }
 
 private struct SessionAccumulator {

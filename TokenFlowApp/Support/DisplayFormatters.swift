@@ -31,4 +31,12 @@ enum DisplayFormatters {
         formatter.timeStyle = .short
         return formatter.string(from: value)
     }
+
+    static func dayAndTime(_ value: Date?) -> String {
+        guard let value else { return "Unknown" }
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US")
+        formatter.dateFormat = "EEEE 'at' h:mm a"
+        return formatter.string(from: value)
+    }
 }

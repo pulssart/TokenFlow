@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0DD70EA44950458C671E83B1 /* TokenMenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B411978A576B9CF290E45EA5 /* TokenMenuBarController.swift */; };
 		2BC66045E4B404EF0F8053ED /* DisplayFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */; };
 		2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
 		3C811CB6F60F632BDA3883FD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
@@ -22,6 +23,7 @@
 		C07FE75962DE9EAD065610FC /* TokenFlowWidgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FE5922CE07C37AAB2FA7B9F /* TokenFlowWidgets.swift */; };
 		D807B71F7C38594B62AD541C /* TokenFlowApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53B0C8487BA476D8567112FE /* TokenFlowApp.swift */; };
 		DEB6D6AC8EEC5A4F35E89CF2 /* CodexUsageReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FC2A1DDB24999126DCF489E /* CodexUsageReader.swift */; };
+		E7FEF98293E3345FA4107F1A /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2C3E33886327711DCDBB6D3 /* AppPreferences.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +61,8 @@
 		8C337A79C2F1C9333386820F /* TokenFlowWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TokenFlowWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FE5922CE07C37AAB2FA7B9F /* TokenFlowWidgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFlowWidgets.swift; sourceTree = "<group>"; };
 		9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayFormatters.swift; sourceTree = "<group>"; };
+		B2C3E33886327711DCDBB6D3 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		B411978A576B9CF290E45EA5 /* TokenMenuBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenMenuBarController.swift; sourceTree = "<group>"; };
 		C8E884E5B0CB90804A5F62FA /* TokenModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenModels.swift; sourceTree = "<group>"; };
 		CD0A6AFACA971E76C28B1C56 /* TokenUsageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenUsageStore.swift; sourceTree = "<group>"; };
 		CD398F61545764963A93913F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -99,7 +103,9 @@
 		396243F07C613F65A6FC0463 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				B2C3E33886327711DCDBB6D3 /* AppPreferences.swift */,
 				9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */,
+				B411978A576B9CF290E45EA5 /* TokenMenuBarController.swift */,
 			);
 			path = Support;
 			sourceTree = "<group>";
@@ -279,6 +285,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7FEF98293E3345FA4107F1A /* AppPreferences.swift in Sources */,
 				853BD88DFCADACD43D7F4E8A /* CodexAuthReader.swift in Sources */,
 				DEB6D6AC8EEC5A4F35E89CF2 /* CodexUsageReader.swift in Sources */,
 				A98E9B0537BD5A753C43EFF7 /* ContentView.swift in Sources */,
@@ -286,6 +293,7 @@
 				6A95B0A8179C623637E2E0B3 /* SettingsView.swift in Sources */,
 				53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */,
 				D807B71F7C38594B62AD541C /* TokenFlowApp.swift in Sources */,
+				0DD70EA44950458C671E83B1 /* TokenMenuBarController.swift in Sources */,
 				2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */,
 				626C2C2702319860994A2636 /* TokenNotificationManager.swift in Sources */,
 				6B472D3CD3D2317C999328B3 /* TokenUsageStore.swift in Sources */,

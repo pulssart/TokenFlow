@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @EnvironmentObject private var store: TokenUsageStore
+    @AppStorage(AppPreferenceKeys.showMenuBarExtra) private var showMenuBarExtra = true
+    @AppStorage(AppPreferenceKeys.enableNotifications) private var enableNotifications = true
 
     var body: some View {
         let snapshot = store.snapshot
@@ -27,10 +29,16 @@ struct SettingsView: View {
             }
 
             ConnectionSettingsCard(snapshot: snapshot.auth, plan: snapshot.currentSession.planType)
+            PreferencesSettingsCard(showMenuBarExtra: $showMenuBarExtra, enableNotifications: $enableNotifications)
         }
         .padding(20)
         .frame(width: AppLayout.settingsWidth, height: AppLayout.settingsHeight)
         .background(Color.tokenFlowWindowBackground)
+        .onChange(of: enableNotifications) { _, isEnabled in
+            guard isEnabled else { return }
+            TokenNotificationManager.shared.requestAuthorization()
+            Task { await store.refresh() }
+        }
     }
 }
 
@@ -60,6 +68,29 @@ private struct ConnectionSettingsCard: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color.tokenFlowCard, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(Color.black.opacity(0.06), lineWidth: 1)
+        }
+    }
+}
+
+private struct PreferencesSettingsCard: View {
+    @Binding var showMenuBarExtra: Bool
+    @Binding var enableNotifications: Bool
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Preferences")
+                .font(.headline)
+
+            Toggle("Show menu bar item", isOn: $showMenuBarExtra)
+            Toggle("Enable notifications", isOn: $enableNotifications)
+        }
+        .toggleStyle(.switch)
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
         .background(Color.tokenFlowCard, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
         .overlay {
             RoundedRectangle(cornerRadius: 8, style: .continuous)

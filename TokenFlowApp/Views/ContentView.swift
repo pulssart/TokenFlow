@@ -8,9 +8,6 @@ struct ContentView: View {
         let snapshot = store.snapshot
 
         VStack(spacing: 12) {
-            header(snapshot)
-                .frame(height: AppLayout.headerHeight)
-
             HStack(spacing: 14) {
                 UsageCard(
                     title: "Session",
@@ -44,17 +41,25 @@ struct ContentView: View {
                 .frame(height: AppLayout.recentHeight)
         }
         .padding(20)
-        .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight)
+        .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight, alignment: .top)
         .background(WindowBackground())
         .containerBackground(Color.tokenFlowWindowBackground, for: .window)
         .toolbar {
-            ToolbarItem(placement: .primaryAction) {
+            ToolbarItemGroup(placement: .primaryAction) {
                 Button {
                     Task { await store.refresh() }
                 } label: {
                     Image(systemName: store.isRefreshing ? "arrow.triangle.2.circlepath.circle" : "arrow.clockwise")
                 }
                 .help("Refresh")
+
+                Button {
+                    openWindow(id: "settings")
+                } label: {
+                    Label("Settings", systemImage: "gearshape")
+                }
+                .buttonStyle(.bordered)
+                .help("Settings")
             }
         }
         .overlay(alignment: .bottom) {
@@ -68,39 +73,6 @@ struct ContentView: View {
             }
         }
         .clipped()
-    }
-
-    private func header(_ snapshot: TokenFlowSnapshot) -> some View {
-        HStack(alignment: .firstTextBaseline) {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("TokenFlow")
-                    .font(.system(size: 26, weight: .semibold, design: .rounded))
-                Text(snapshot.currentSession.title)
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
-
-            Spacer()
-
-            VStack(alignment: .trailing, spacing: 4) {
-                Text("Updated \(DisplayFormatters.date(snapshot.generatedAt))")
-                    .font(.callout)
-                    .foregroundStyle(.secondary)
-                Text(snapshot.currentSession.path)
-                    .font(.caption)
-                    .foregroundStyle(.tertiary)
-                    .lineLimit(1)
-            }
-            .frame(maxWidth: 300, alignment: .trailing)
-
-            Button {
-                openWindow(id: "settings")
-            } label: {
-                Label("Settings", systemImage: "gearshape")
-            }
-            .buttonStyle(.bordered)
-        }
     }
 
     private func contextProgress(_ session: SessionUsageSnapshot) -> Double {
@@ -177,10 +149,34 @@ private struct SessionDetailCard: View {
                     LimitBadge(limit: session.primaryLimit)
                 }
 
-                TokenBar(label: "Input", value: session.total.input, total: session.total.total, tint: .teal)
-                TokenBar(label: "Cache", value: session.total.cachedInput, total: session.total.total, tint: .mint)
-                TokenBar(label: "Output", value: session.total.output, total: session.total.total, tint: .orange)
-                TokenBar(label: "Reasoning", value: session.total.reasoningOutput, total: session.total.total, tint: .purple)
+                TokenBar(
+                    label: "Input",
+                    value: session.total.input,
+                    total: session.total.total,
+                    tint: .teal,
+                    help: "Input tokens are the tokens sent to the model, including your messages, tool context, files, and instructions."
+                )
+                TokenBar(
+                    label: "Cache",
+                    value: session.total.cachedInput,
+                    total: session.total.total,
+                    tint: .mint,
+                    help: "Cache tokens are input tokens reused from a previous request instead of processed as fresh context."
+                )
+                TokenBar(
+                    label: "Output",
+                    value: session.total.output,
+                    total: session.total.total,
+                    tint: .orange,
+                    help: "Output tokens are the tokens written back by the model in its visible response."
+                )
+                TokenBar(
+                    label: "Reasoning",
+                    value: session.total.reasoningOutput,
+                    total: session.total.total,
+                    tint: .purple,
+                    help: "Reasoning tokens are internal thinking tokens used by reasoning models before they produce the visible response."
+                )
 
                 Divider()
 
@@ -252,7 +248,7 @@ private struct RecentSessionsCard: View {
                         .background(.quaternary, in: Capsule())
                 }
 
-                ForEach(sessions.prefix(3)) { session in
+                ForEach(sessions.prefix(4)) { session in
                     HStack(spacing: 10) {
                         Image(systemName: "message.badge.waveform")
                             .foregroundStyle(.secondary)
@@ -282,8 +278,11 @@ private struct TokenBar: View {
     var value: Int
     var total: Int
     var tint: Color
+    var help: String
 
     var body: some View {
+        let progress = total > 0 ? Double(value) / Double(total) : 0
+
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
@@ -293,10 +292,19 @@ private struct TokenBar: View {
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
-            ProgressView(value: total > 0 ? Double(value) / Double(total) : 0)
-                .tint(tint)
-                .controlSize(.small)
+            GeometryReader { proxy in
+                ZStack(alignment: .leading) {
+                    Capsule()
+                        .fill(Color.black.opacity(0.07))
+
+                    Capsule()
+                        .fill(tint.gradient)
+                        .frame(width: proxy.size.width * min(max(progress, 0), 1))
+                }
+            }
+            .frame(height: 14)
         }
+        .help(help)
     }
 }
 
@@ -416,8 +424,17 @@ private struct WindowBackground: View {
 }
 
 extension Color {
-    static let tokenFlowWindowBackground = Color(red: 0.965, green: 0.965, blue: 0.955)
+    static let tokenFlowWindowBackground = Color(nsColor: .tokenFlowWindowBackground)
     static let tokenFlowCard = Color(nsColor: .textBackgroundColor)
+}
+
+private extension NSColor {
+    static let tokenFlowWindowBackground = NSColor(name: nil) { appearance in
+        let isDark = appearance.bestMatch(from: [.darkAqua, .aqua]) == .darkAqua
+        return isDark
+            ? NSColor(calibratedWhite: 0.08, alpha: 1)
+            : NSColor(calibratedRed: 0.965, green: 0.965, blue: 0.955, alpha: 1)
+    }
 }
 
 #Preview {
