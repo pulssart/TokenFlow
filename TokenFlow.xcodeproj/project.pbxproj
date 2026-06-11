@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		0DD70EA44950458C671E83B1 /* TokenMenuBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B411978A576B9CF290E45EA5 /* TokenMenuBarController.swift */; };
 		2BC66045E4B404EF0F8053ED /* DisplayFormatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE9CC2DD83E1FB2D05FE887 /* DisplayFormatters.swift */; };
+		2D84B4034048A0CA08CA6558 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0936E58F57BDC00E6262FFEF /* OnboardingView.swift */; };
 		2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
 		3C811CB6F60F632BDA3883FD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
 		53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */; };
@@ -52,6 +53,7 @@
 
 /* Begin PBXFileReference section */
 		023B078CE521B2B6A1C7BC8F /* TokenFlow.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TokenFlow.entitlements; sourceTree = "<group>"; };
+		0936E58F57BDC00E6262FFEF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		26BAF81906885CA4F7F7E480 /* CodexAuthReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodexAuthReader.swift; sourceTree = "<group>"; };
 		4A9B386DC5A1A1131BE71F9C /* TokenNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenNotificationManager.swift; sourceTree = "<group>"; };
 		53B0C8487BA476D8567112FE /* TokenFlowApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokenFlowApp.swift; sourceTree = "<group>"; };
@@ -87,6 +89,7 @@
 			isa = PBXGroup;
 			children = (
 				6A38DB0B39C4BDE615487C64 /* ContentView.swift */,
+				0936E58F57BDC00E6262FFEF /* OnboardingView.swift */,
 				D86B43A3593E351E51AB786A /* SettingsView.swift */,
 			);
 			path = Views;
@@ -290,6 +293,7 @@
 				DEB6D6AC8EEC5A4F35E89CF2 /* CodexUsageReader.swift in Sources */,
 				A98E9B0537BD5A753C43EFF7 /* ContentView.swift in Sources */,
 				2BC66045E4B404EF0F8053ED /* DisplayFormatters.swift in Sources */,
+				2D84B4034048A0CA08CA6558 /* OnboardingView.swift in Sources */,
 				6A95B0A8179C623637E2E0B3 /* SettingsView.swift in Sources */,
 				53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */,
 				D807B71F7C38594B62AD541C /* TokenFlowApp.swift in Sources */,

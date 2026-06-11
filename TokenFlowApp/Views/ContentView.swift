@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var store: TokenUsageStore
     @Environment(\.openWindow) private var openWindow
+    @State private var isShowingTokenInfo = false
 
     var body: some View {
         let snapshot = store.snapshot
@@ -47,6 +48,13 @@ struct ContentView: View {
         .toolbar {
             ToolbarItemGroup(placement: .primaryAction) {
                 Button {
+                    isShowingTokenInfo = true
+                } label: {
+                    Image(systemName: "info.circle")
+                }
+                .help("Token information")
+
+                Button {
                     Task { await store.refresh() }
                 } label: {
                     Image(systemName: store.isRefreshing ? "arrow.triangle.2.circlepath.circle" : "arrow.clockwise")
@@ -61,6 +69,9 @@ struct ContentView: View {
                 .buttonStyle(.bordered)
                 .help("Settings")
             }
+        }
+        .sheet(isPresented: $isShowingTokenInfo) {
+            TokenInfoSheet()
         }
         .overlay(alignment: .bottom) {
             if let message = store.errorMessage {
@@ -89,6 +100,66 @@ struct ContentView: View {
 
     private func boundedProgress(_ percent: Double) -> Double {
         min(max(percent / 100, 0), 1)
+    }
+}
+
+private struct TokenInfoSheet: View {
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            HStack(alignment: .firstTextBaseline) {
+                Text("How Codex tokens work")
+                    .font(.title3.weight(.semibold))
+                Spacer()
+                Button {
+                    dismiss()
+                } label: {
+                    Image(systemName: "xmark")
+                }
+                .buttonStyle(.borderless)
+                .help("Close")
+            }
+
+            InfoSection(
+                title: "Session",
+                text: "A session is one Codex conversation or work thread. TokenFlow reads the tokens reported for the current session and shows how much of its session limit is already used. The reset time is the moment Codex is expected to refresh that session capacity."
+            )
+
+            InfoSection(
+                title: "Day",
+                text: "During a day, you can have several sessions. Recent sessions shows the latest sessions found in the Codex history. They are not a second daily budget. They help you see which work threads consumed tokens recently."
+            )
+
+            InfoSection(
+                title: "Week",
+                text: "The weekly view adds up the sessions read for the current week. The Week gauge shows the weekly quota used when Codex exposes a weekly limit. The reset time is the next weekly refresh."
+            )
+
+            InfoSection(
+                title: "Token types",
+                text: "Input is what Codex sends to the model. Cache is reused input. Output is visible text produced by the model. Reasoning is internal model work before the answer."
+            )
+        }
+        .padding(22)
+        .frame(width: 520, alignment: .topLeading)
+        .background(Color.tokenFlowWindowBackground)
+    }
+}
+
+private struct InfoSection: View {
+    var title: String
+    var text: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(title)
+                .font(.headline)
+            Text(text)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
     }
 }
 

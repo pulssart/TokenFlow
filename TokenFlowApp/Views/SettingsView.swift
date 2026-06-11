@@ -4,6 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject private var store: TokenUsageStore
     @AppStorage(AppPreferenceKeys.showMenuBarExtra) private var showMenuBarExtra = true
     @AppStorage(AppPreferenceKeys.enableNotifications) private var enableNotifications = true
+    @AppStorage(AppPreferenceKeys.onboardingCompleted) private var onboardingCompleted = false
 
     var body: some View {
         let snapshot = store.snapshot
@@ -30,6 +31,7 @@ struct SettingsView: View {
 
             ConnectionSettingsCard(snapshot: snapshot.auth, plan: snapshot.currentSession.planType)
             PreferencesSettingsCard(showMenuBarExtra: $showMenuBarExtra, enableNotifications: $enableNotifications)
+            OnboardingSettingsCard(onboardingCompleted: $onboardingCompleted)
         }
         .padding(20)
         .frame(width: AppLayout.settingsWidth, height: AppLayout.settingsHeight)
@@ -38,6 +40,37 @@ struct SettingsView: View {
             guard isEnabled else { return }
             TokenNotificationManager.shared.requestAuthorization()
             Task { await store.refresh() }
+        }
+    }
+}
+
+private struct OnboardingSettingsCard: View {
+    @Binding var onboardingCompleted: Bool
+
+    var body: some View {
+        HStack(alignment: .center, spacing: 14) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Onboarding")
+                    .font(.headline)
+                Text("Show the setup steps again.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+
+            Button {
+                onboardingCompleted = false
+            } label: {
+                Label("Show", systemImage: "sparkles")
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color.tokenFlowCard, in: RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .overlay {
+            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                .stroke(Color.black.opacity(0.06), lineWidth: 1)
         }
     }
 }

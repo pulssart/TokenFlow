@@ -5,10 +5,19 @@ import SwiftUI
 struct TokenFlowApp: App {
     @StateObject private var store = TokenUsageStore()
     @AppStorage(AppPreferenceKeys.showMenuBarExtra) private var showMenuBarExtra = true
+    @AppStorage(AppPreferenceKeys.onboardingCompleted) private var onboardingCompleted = false
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            Group {
+                if onboardingCompleted {
+                    ContentView()
+                } else {
+                    OnboardingView(auth: store.snapshot.auth) {
+                        await store.refresh()
+                    }
+                }
+            }
                 .environmentObject(store)
                 .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight)
                 .onAppear {
@@ -54,7 +63,7 @@ enum AppLayout {
     static let detailHeight: CGFloat = 300
     static let recentHeight: CGFloat = 160
     static let settingsWidth: CGFloat = 440
-    static let settingsHeight: CGFloat = 360
+    static let settingsHeight: CGFloat = 430
 }
 
 extension TokenFlowSnapshot {
