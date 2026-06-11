@@ -188,7 +188,9 @@ struct CodexUsageReader {
         return WeeklyUsageSnapshot(
             totalTokens: total.total,
             inputTokens: total.input,
+            cachedInputTokens: total.cachedInput,
             outputTokens: total.output,
+            reasoningTokens: total.reasoningOutput,
             sessions: count,
             dailyTotals: daily,
             limit: latestLimit

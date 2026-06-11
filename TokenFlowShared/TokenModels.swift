@@ -53,7 +53,9 @@ struct SessionUsageSnapshot: Codable, Equatable, Identifiable {
 struct WeeklyUsageSnapshot: Codable, Equatable {
     var totalTokens: Int
     var inputTokens: Int
+    var cachedInputTokens: Int
     var outputTokens: Int
+    var reasoningTokens: Int
     var sessions: Int
     var dailyTotals: [DailyTokenTotal]
     var limit: LimitSnapshot?
@@ -61,11 +63,56 @@ struct WeeklyUsageSnapshot: Codable, Equatable {
     static let empty = WeeklyUsageSnapshot(
         totalTokens: 0,
         inputTokens: 0,
+        cachedInputTokens: 0,
         outputTokens: 0,
+        reasoningTokens: 0,
         sessions: 0,
         dailyTotals: [],
         limit: nil
     )
+
+    init(
+        totalTokens: Int,
+        inputTokens: Int,
+        cachedInputTokens: Int,
+        outputTokens: Int,
+        reasoningTokens: Int,
+        sessions: Int,
+        dailyTotals: [DailyTokenTotal],
+        limit: LimitSnapshot?
+    ) {
+        self.totalTokens = totalTokens
+        self.inputTokens = inputTokens
+        self.cachedInputTokens = cachedInputTokens
+        self.outputTokens = outputTokens
+        self.reasoningTokens = reasoningTokens
+        self.sessions = sessions
+        self.dailyTotals = dailyTotals
+        self.limit = limit
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case totalTokens
+        case inputTokens
+        case cachedInputTokens
+        case outputTokens
+        case reasoningTokens
+        case sessions
+        case dailyTotals
+        case limit
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        totalTokens = try container.decode(Int.self, forKey: .totalTokens)
+        inputTokens = try container.decode(Int.self, forKey: .inputTokens)
+        cachedInputTokens = try container.decodeIfPresent(Int.self, forKey: .cachedInputTokens) ?? 0
+        outputTokens = try container.decode(Int.self, forKey: .outputTokens)
+        reasoningTokens = try container.decodeIfPresent(Int.self, forKey: .reasoningTokens) ?? 0
+        sessions = try container.decode(Int.self, forKey: .sessions)
+        dailyTotals = try container.decode([DailyTokenTotal].self, forKey: .dailyTotals)
+        limit = try container.decodeIfPresent(LimitSnapshot.self, forKey: .limit)
+    }
 }
 
 struct DailyTokenTotal: Codable, Equatable, Identifiable {

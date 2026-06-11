@@ -40,6 +40,14 @@ struct ContentView: View {
 
             RecentSessionsCard(sessions: snapshot.recentSessions)
                 .frame(height: AppLayout.recentHeight)
+
+            WeeklyAnalysisCard(
+                state: store.weeklyAnalysisState,
+                isRefreshing: store.isRefreshingWeeklyAnalysis
+            ) {
+                Task { await store.refreshWeeklyAnalysis() }
+            }
+            .frame(height: AppLayout.analysisHeight)
         }
         .padding(20)
         .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight, alignment: .top)
@@ -195,7 +203,7 @@ private struct UsageCard: View {
                     Text("\(Int((progress * 100).rounded()))")
                         .font(.caption.weight(.semibold))
                 }
-                .frame(width: 76, height: 76)
+                .frame(width: 84, height: 84)
             }
         }
         .frame(maxHeight: .infinity)
@@ -344,6 +352,84 @@ private struct RecentSessionsCard: View {
     }
 }
 
+private struct WeeklyAnalysisCard: View {
+    var state: WeeklyCodexAnalysisState
+    var isRefreshing: Bool
+    var refresh: () -> Void
+
+    var body: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .firstTextBaseline) {
+                    VStack(alignment: .leading, spacing: 3) {
+                        Text("Weekly Codex analysis")
+                            .font(.headline)
+                        Text(subtitle)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    Spacer()
+
+                    Button(action: refresh) {
+                        Label(isRefreshing ? "Refreshing" : "Refresh", systemImage: isRefreshing ? "arrow.triangle.2.circlepath" : "arrow.clockwise")
+                    }
+                    .disabled(isRefreshing)
+                    .help("Refresh weekly analysis")
+                }
+
+                content
+            }
+        }
+        .frame(maxHeight: .infinity)
+    }
+
+    private var subtitle: String {
+        switch state {
+        case .ready(let analysis):
+            return "Apple Foundation Model, generated \(DisplayFormatters.date(analysis.generatedAt))"
+        case .loading:
+            return "Apple Foundation Model is analyzing this week"
+        case .unavailable:
+            return "Apple Foundation Model unavailable"
+        case .failed:
+            return "Analysis failed"
+        case .idle:
+            return "Summarize work, intensity, and token optimization"
+        }
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch state {
+        case .ready(let analysis):
+            Text(analysis.text)
+                .font(.callout)
+                .foregroundStyle(.primary)
+                .lineLimit(5)
+                .fixedSize(horizontal: false, vertical: true)
+        case .loading:
+            HStack(spacing: 10) {
+                ProgressView()
+                    .controlSize(.small)
+                Text("Reading weekly usage and recent Codex sessions.")
+                    .font(.callout)
+                    .foregroundStyle(.secondary)
+            }
+        case .unavailable(let message), .failed(let message):
+            Text(message)
+                .font(.callout)
+                .foregroundStyle(.secondary)
+                .lineLimit(3)
+                .fixedSize(horizontal: false, vertical: true)
+        case .idle:
+            Text("Refresh to generate a local weekly summary with Apple Foundation Model.")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+    }
+}
+
 private struct TokenBar: View {
     var label: String
     var value: Int
@@ -446,7 +532,7 @@ private struct AppCircularProgress<Content: View>: View {
     var body: some View {
         GeometryReader { proxy in
             let size = min(proxy.size.width, proxy.size.height)
-            let lineWidth = max(size * 0.08, 6)
+            let lineWidth = max(size * 0.095, 7)
             let clamped = min(max(progress, 0), 1)
 
             ZStack {

@@ -32,6 +32,8 @@ final class TokenNotificationManager {
     private func evaluateSession(_ session: SessionUsageSnapshot) async {
         guard session.id != SessionUsageSnapshot.empty.id else { return }
 
+        await evaluateSessionReset(session)
+
         let usedPercent: Double
         if let limit = session.primaryLimit {
             usedPercent = limit.usedPercent
@@ -62,6 +64,8 @@ final class TokenNotificationManager {
     private func evaluateWeek(_ weekly: WeeklyUsageSnapshot) async {
         guard let limit = weekly.limit else { return }
 
+        await evaluateWeekReset(weekly)
+
         let resetKey = limit.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "no-reset"
         let key = "\(storagePrefix).week.\(resetKey)"
 
@@ -71,6 +75,60 @@ final class TokenNotificationManager {
                 body: "TokenFlow is tracking \(DisplayFormatters.tokens(weekly.totalTokens)) tokens this week."
             )
         }
+    }
+
+    private func evaluateSessionReset(_ session: SessionUsageSnapshot) async {
+        guard let reset = session.primaryLimit?.resetsAt else { return }
+
+        let observedKey = "\(storagePrefix).session.\(session.id).observedReset"
+        let notifiedKey = "\(storagePrefix).session.\(session.id).notifiedReset"
+        await evaluateReset(
+            observedKey: observedKey,
+            notifiedKey: notifiedKey,
+            currentReset: reset,
+            title: "Session reset",
+            body: "Your Codex session quota has reset. Next reset: \(DisplayFormatters.dayAndTime(reset))."
+        )
+    }
+
+    private func evaluateWeekReset(_ weekly: WeeklyUsageSnapshot) async {
+        guard let reset = weekly.limit?.resetsAt else { return }
+
+        await evaluateReset(
+            observedKey: "\(storagePrefix).week.observedReset",
+            notifiedKey: "\(storagePrefix).week.notifiedReset",
+            currentReset: reset,
+            title: "Weekly quota reset",
+            body: "Your Codex weekly quota has reset. Next reset: \(DisplayFormatters.dayAndTime(reset))."
+        )
+    }
+
+    private func evaluateReset(
+        observedKey: String,
+        notifiedKey: String,
+        currentReset: Date,
+        title: String,
+        body: String
+    ) async {
+        let currentValue = currentReset.timeIntervalSince1970
+        let previousValue = defaults.object(forKey: observedKey) as? TimeInterval
+
+        defer {
+            defaults.set(currentValue, forKey: observedKey)
+        }
+
+        guard let previousValue, currentValue > previousValue else { return }
+        guard Date().timeIntervalSince1970 >= previousValue else { return }
+
+        let notifiedValue = defaults.object(forKey: notifiedKey) as? TimeInterval
+        guard notifiedValue != previousValue else { return }
+
+        defaults.set(previousValue, forKey: notifiedKey)
+        await send(
+            identifier: "tokenflow.\(notifiedKey).\(Int(previousValue))",
+            title: title,
+            body: body
+        )
     }
 
     private func notifyIfNeeded(
@@ -89,18 +147,22 @@ final class TokenNotificationManager {
 
         for threshold in pending {
             let notificationCopy = copy(threshold)
-            await send(title: notificationCopy.title, body: notificationCopy.body, threshold: threshold, key: key)
+            await send(
+                identifier: "tokenflow.\(key).\(Int(threshold))",
+                title: notificationCopy.title,
+                body: notificationCopy.body
+            )
         }
     }
 
-    private func send(title: String, body: String, threshold: Double, key: String) async {
+    private func send(identifier: String, title: String, body: String) async {
         let content = UNMutableNotificationContent()
         content.title = title
         content.body = body
         content.sound = .default
 
         let request = UNNotificationRequest(
-            identifier: "tokenflow.\(key).\(Int(threshold))",
+            identifier: identifier,
             content: content,
             trigger: nil
         )

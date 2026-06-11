@@ -58,10 +58,11 @@ struct TokenFlowApp: App {
 
 enum AppLayout {
     static let windowWidth: CGFloat = 900
-    static let windowHeight: CGFloat = 634
+    static let windowHeight: CGFloat = 794
     static let summaryHeight: CGFloat = 110
     static let detailHeight: CGFloat = 300
     static let recentHeight: CGFloat = 160
+    static let analysisHeight: CGFloat = 148
     static let settingsWidth: CGFloat = 440
     static let settingsHeight: CGFloat = 430
 }
