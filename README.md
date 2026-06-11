@@ -2,7 +2,7 @@
 
 TokenFlow is a small macOS app for tracking Codex token usage from local Codex history.
 
-![TokenFlow dashboard](docs/tokenflow-screenshot.png)
+<img width="1182" height="898" alt="CleanShot 2026-06-11 at 21 10 42" src="https://github.com/user-attachments/assets/54555a5f-2280-4f67-a5d2-d4a5d232b18c" />
 
 ## What it shows
 
