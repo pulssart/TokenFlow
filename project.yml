@@ -19,6 +19,8 @@ targets:
     platform: macOS
     sources:
       - path: TokenFlowApp
+        excludes:
+          - AppIcon.icon
       - path: TokenFlowShared
     entitlements:
       path: TokenFlowApp/TokenFlow.entitlements
@@ -33,7 +35,42 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.adriendonot.TokenFlow
         PRODUCT_NAME: TokenFlow
         INFOPLIST_FILE: TokenFlowApp/Info.plist
-        ASSETCATALOG_COMPILER_APPICON_NAME: ""
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+    postBuildScripts:
+      - name: Compile Icon Composer app icon
+        shell: /bin/zsh
+        script: |
+          set -euo pipefail
+
+          icon_dir="$SRCROOT/TokenFlowApp/AppIcon.icon"
+          output_dir="$TARGET_TEMP_DIR/TokenFlowAppIcon"
+          resources_dir="$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH"
+          minimum_target="${MACOSX_DEPLOYMENT_TARGET:-15.0}"
+
+          rm -rf "$output_dir"
+          mkdir -p "$output_dir"
+
+          xcrun actool "$icon_dir" \
+            --compile "$output_dir" \
+            --app-icon AppIcon \
+            --enable-on-demand-resources NO \
+            --development-region en \
+            --target-device mac \
+            --platform macosx \
+            --include-all-app-icons \
+            --minimum-deployment-target "$minimum_target" \
+            --output-partial-info-plist "$output_dir/AppIcon-PartialInfo.plist"
+
+          /usr/bin/ditto "$output_dir/Assets.car" "$resources_dir/Assets.car"
+          /usr/bin/ditto "$output_dir/AppIcon.icns" "$resources_dir/AppIcon.icns"
+          /usr/bin/touch "$output_dir/icon-composer.stamp"
+        inputFiles:
+          - $(SRCROOT)/TokenFlowApp/AppIcon.icon/icon.json
+          - $(SRCROOT)/TokenFlowApp/AppIcon.icon/Assets/TokenFlow.png
+        outputFiles:
+          - $(TARGET_TEMP_DIR)/TokenFlowAppIcon/icon-composer.stamp
+        basedOnDependencyAnalysis: false
+        showEnvVars: false
   TokenFlowWidgets:
     type: app-extension
     platform: macOS

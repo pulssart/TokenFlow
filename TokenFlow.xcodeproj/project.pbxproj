@@ -12,6 +12,7 @@
 		2D84B4034048A0CA08CA6558 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0936E58F57BDC00E6262FFEF /* OnboardingView.swift */; };
 		2F23960657017FAE9CC2CDBD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
 		3C811CB6F60F632BDA3883FD /* TokenModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8E884E5B0CB90804A5F62FA /* TokenModels.swift */; };
+		43CB1689E101D0CD850814FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E749B7D13088090E880905FF /* Assets.xcassets */; };
 		53D35B3E5252C8FF71B8BBFF /* SharedSnapshotStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69650391AD944C797C0015A7 /* SharedSnapshotStore.swift */; };
 		626C2C2702319860994A2636 /* TokenNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9B386DC5A1A1131BE71F9C /* TokenNotificationManager.swift */; };
 		6A95B0A8179C623637E2E0B3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86B43A3593E351E51AB786A /* SettingsView.swift */; };
@@ -74,6 +75,7 @@
 		D86B43A3593E351E51AB786A /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D969CA1843B47A8549FA992C /* TokenFlow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TokenFlow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC5809B10F550331765AE155 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		E749B7D13088090E880905FF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EF4B31F7886AC6828ADFE7C7 /* TokenFlowWidgets.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TokenFlowWidgets.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -147,6 +149,7 @@
 		B8BB1363FEF58920FFBEA904 /* TokenFlowApp */ = {
 			isa = PBXGroup;
 			children = (
+				E749B7D13088090E880905FF /* Assets.xcassets */,
 				CD398F61545764963A93913F /* Info.plist */,
 				023B078CE521B2B6A1C7BC8F /* TokenFlow.entitlements */,
 				38A89408270D785D16FF4062 /* App */,
@@ -213,6 +216,7 @@
 				F17BB439CA53CF14864B693B /* Sources */,
 				0559497EC12655E272A26D15 /* Resources */,
 				9F285A372857882C9C585C66 /* Embed Foundation Extensions */,
+				B0035FFC65FA62AC61A4B69C /* Compile Icon Composer app icon */,
 			);
 			buildRules = (
 			);
@@ -270,11 +274,38 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				43CB1689E101D0CD850814FB /* Assets.xcassets in Resources */,
 				8C76796D2492B03731947524 /* TokenFlowIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		B0035FFC65FA62AC61A4B69C /* Compile Icon Composer app icon */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/TokenFlowApp/AppIcon.icon/icon.json",
+				"$(SRCROOT)/TokenFlowApp/AppIcon.icon/Assets/TokenFlow.png",
+			);
+			name = "Compile Icon Composer app icon";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_TEMP_DIR)/TokenFlowAppIcon/icon-composer.stamp",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/zsh;
+			shellScript = "set -euo pipefail\n\nicon_dir=\"$SRCROOT/TokenFlowApp/AppIcon.icon\"\noutput_dir=\"$TARGET_TEMP_DIR/TokenFlowAppIcon\"\nresources_dir=\"$TARGET_BUILD_DIR/$UNLOCALIZED_RESOURCES_FOLDER_PATH\"\nminimum_target=\"${MACOSX_DEPLOYMENT_TARGET:-15.0}\"\n\nrm -rf \"$output_dir\"\nmkdir -p \"$output_dir\"\n\nxcrun actool \"$icon_dir\" \\\n  --compile \"$output_dir\" \\\n  --app-icon AppIcon \\\n  --enable-on-demand-resources NO \\\n  --development-region en \\\n  --target-device mac \\\n  --platform macosx \\\n  --include-all-app-icons \\\n  --minimum-deployment-target \"$minimum_target\" \\\n  --output-partial-info-plist \"$output_dir/AppIcon-PartialInfo.plist\"\n\n/usr/bin/ditto \"$output_dir/Assets.car\" \"$resources_dir/Assets.car\"\n/usr/bin/ditto \"$output_dir/AppIcon.icns\" \"$resources_dir/AppIcon.icns\"\n/usr/bin/touch \"$output_dir/icon-composer.stamp\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6C51D8B78CC265A707EF2B60 /* Sources */ = {
@@ -322,7 +353,7 @@
 		3353A32805139177A03AB3F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TokenFlowApp/TokenFlow.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TokenFlowApp/Info.plist;
@@ -358,7 +389,7 @@
 		5EFFFA4DF8A6217B59B8E34E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = "";
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = TokenFlowApp/TokenFlow.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TokenFlowApp/Info.plist;

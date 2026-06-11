@@ -9,7 +9,7 @@ final class TokenUsageStore: ObservableObject {
     @Published private(set) var isRefreshingWeeklyAnalysis = false
     @Published private(set) var errorMessage: String?
 
-    private let refreshIntervalNanoseconds: UInt64 = 60 * 1_000_000_000
+    private let refreshIntervalNanoseconds: UInt64 = 10 * 1_000_000_000
 
     func refresh() async {
         guard !isRefreshing else { return }
@@ -25,7 +25,7 @@ final class TokenUsageStore: ObservableObject {
             SharedSnapshotStore.write(snapshot)
             WidgetCenter.shared.reloadAllTimelines()
             await TokenNotificationManager.shared.evaluate(snapshot)
-            if case .idle = weeklyAnalysisState {
+            if UserDefaults.standard.bool(forKey: AppPreferenceKeys.enableWeeklyCodexAnalysis), case .idle = weeklyAnalysisState {
                 Task { await self.refreshWeeklyAnalysis() }
             }
         } catch is CancellationError {
@@ -55,6 +55,11 @@ final class TokenUsageStore: ObservableObject {
                 weeklyAnalysisState = .failed(message)
             }
         }
+    }
+
+    func refreshWeeklyAnalysisIfNeeded() async {
+        guard case .idle = weeklyAnalysisState else { return }
+        await refreshWeeklyAnalysis()
     }
 
     func startAutomaticRefresh() async {

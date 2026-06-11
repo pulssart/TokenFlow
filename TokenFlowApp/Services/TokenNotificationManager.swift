@@ -10,6 +10,7 @@ final class TokenNotificationManager {
     private let storagePrefix = "notifications.v2"
     private let standardThresholds = stride(from: 10, through: 90, by: 10).map(Double.init)
     private let sessionThresholds = stride(from: 10, through: 100, by: 10).map(Double.init)
+    private let discussionWarnThreshold: Double = 80
 
     private init() {}
 
@@ -33,21 +34,17 @@ final class TokenNotificationManager {
         guard session.id != SessionUsageSnapshot.empty.id else { return }
 
         await evaluateSessionReset(session)
+        await evaluateSessionDiscussionWarn(session)
 
-        let usedPercent: Double
-        if let limit = session.primaryLimit {
-            usedPercent = limit.usedPercent
-        } else {
-            guard session.contextWindow > 0 else { return }
-            usedPercent = Double(session.total.total) / Double(session.contextWindow) * 100
-        }
+        let usedPercent = session.usedPercent
+        guard usedPercent > 0 else { return }
 
-        let resetKey = session.primaryLimit?.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "no-reset"
+        let resetKey = session.activePrimaryLimit?.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "no-reset"
         let key = "\(storagePrefix).session.\(session.id).\(resetKey)"
 
         await notifyIfNeeded(key: key, usedPercent: usedPercent, thresholds: sessionThresholds) { threshold in
             if threshold >= 100 {
-                let resetText = DisplayFormatters.dayAndTime(session.primaryLimit?.resetsAt)
+                let resetText = DisplayFormatters.dayAndTime(session.activePrimaryLimit?.resetsAt)
                 return NotificationCopy(
                     title: "Session exhausted",
                     body: "This Codex session has reached its token limit. Next reset: \(resetText)."
@@ -61,11 +58,25 @@ final class TokenNotificationManager {
         }
     }
 
-    private func evaluateWeek(_ weekly: WeeklyUsageSnapshot) async {
-        guard let limit = weekly.limit else { return }
+    private func evaluateSessionDiscussionWarn(_ session: SessionUsageSnapshot) async {
+        let usedPercent = session.usedPercent
+        guard usedPercent >= discussionWarnThreshold else { return }
 
+        let resetKey = session.activePrimaryLimit?.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "no-reset"
+        let key = "\(storagePrefix).session.discussion-warning.\(session.id).\(resetKey)"
+
+        await notifyIfNeeded(key: key, usedPercent: usedPercent, thresholds: [discussionWarnThreshold]) { _ in
+            NotificationCopy(
+                title: "Start a new discussion",
+                body: "This discussion has reached \(DisplayFormatters.tokens(session.total.total)) tokens. Open a fresh discussion now to keep token usage cleaner and avoid going over budget."
+            )
+        }
+    }
+
+    private func evaluateWeek(_ weekly: WeeklyUsageSnapshot) async {
         await evaluateWeekReset(weekly)
 
+        guard let limit = weekly.activeLimit else { return }
         let resetKey = limit.resetsAt.map { ISO8601DateFormatter().string(from: $0) } ?? "no-reset"
         let key = "\(storagePrefix).week.\(resetKey)"
 

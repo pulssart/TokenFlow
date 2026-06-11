@@ -173,7 +173,7 @@ private struct WeeklyWidgetView: View {
                 Text("Week")
                     .font(.headline)
                 Spacer()
-                if let limit = weekly.limit {
+                if let limit = weekly.activeLimit {
                     Text("\(Int(limit.usedPercent.rounded())) %")
                         .font(.caption.weight(.semibold))
                 }
@@ -212,13 +212,5 @@ private func widgetTokens(_ value: Int) -> String {
 }
 
 private func sessionUsageProgress(_ session: SessionUsageSnapshot) -> Double {
-    if let limit = session.primaryLimit {
-        return boundedProgress(limit.usedPercent)
-    }
-    guard session.contextWindow > 0 else { return 0 }
-    return min(Double(session.total.total) / Double(session.contextWindow), 1)
-}
-
-private func boundedProgress(_ percent: Double) -> Double {
-    min(max(percent / 100, 0), 1)
+    session.progress
 }

@@ -91,7 +91,7 @@ struct WeeklyCodexAnalysisService {
     private func prompt(for snapshot: TokenFlowSnapshot) -> String {
         let weekly = snapshot.weekly
         let current = snapshot.currentSession
-        let limit = weekly.limit.map {
+        let limit = weekly.activeLimit.map {
             "Weekly quota: \(DisplayFormatters.percent($0.usedPercent)), resets \(DisplayFormatters.absoluteDate($0.resetsAt))"
         } ?? "Weekly quota: not exposed by Codex"
         let days = weekly.dailyTotals

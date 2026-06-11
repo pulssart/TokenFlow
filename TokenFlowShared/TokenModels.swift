@@ -143,3 +143,66 @@ struct LimitSnapshot: Codable, Equatable {
     var windowMinutes: Int
     var resetsAt: Date?
 }
+
+extension SessionUsageSnapshot {
+    var activePrimaryLimit: LimitSnapshot? {
+        activePrimaryLimit(at: .now)
+    }
+
+    var activeSecondaryLimit: LimitSnapshot? {
+        activeSecondaryLimit(at: .now)
+    }
+
+    var usedPercent: Double {
+        usedPercent(at: .now)
+    }
+
+    var progress: Double {
+        progress(at: .now)
+    }
+
+    func activePrimaryLimit(at date: Date) -> LimitSnapshot? {
+        primaryLimit?.active(at: date)
+    }
+
+    func activeSecondaryLimit(at date: Date) -> LimitSnapshot? {
+        secondaryLimit?.active(at: date)
+    }
+
+    func usedPercent(at date: Date) -> Double {
+        if let limit = activePrimaryLimit(at: date) {
+            return limit.clampedUsedPercent
+        }
+        guard contextWindow > 0 else { return 0 }
+        return min(max(Double(total.total) / Double(contextWindow) * 100, 0), 100)
+    }
+
+    func progress(at date: Date) -> Double {
+        usedPercent(at: date) / 100
+    }
+}
+
+extension WeeklyUsageSnapshot {
+    var activeLimit: LimitSnapshot? {
+        activeLimit(at: .now)
+    }
+
+    func activeLimit(at date: Date) -> LimitSnapshot? {
+        limit?.active(at: date)
+    }
+}
+
+extension LimitSnapshot {
+    var clampedUsedPercent: Double {
+        min(max(usedPercent, 0), 100)
+    }
+
+    var progress: Double {
+        clampedUsedPercent / 100
+    }
+
+    func active(at date: Date) -> LimitSnapshot? {
+        guard let resetsAt else { return self }
+        return resetsAt > date ? self : nil
+    }
+}

@@ -3,6 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject private var store: TokenUsageStore
     @Environment(\.openWindow) private var openWindow
+    @AppStorage(AppPreferenceKeys.enableWeeklyCodexAnalysis) private var enableWeeklyCodexAnalysis = false
     @State private var isShowingTokenInfo = false
 
     var body: some View {
@@ -10,22 +11,15 @@ struct ContentView: View {
 
         VStack(spacing: 12) {
             HStack(spacing: 14) {
-                UsageCard(
-                    title: "Session",
-                    value: DisplayFormatters.tokens(snapshot.currentSession.total.total),
-                    caption: "tokens tracked",
-                    symbol: "terminal",
-                    accent: .teal,
-                    progress: sessionUsageProgress(snapshot.currentSession)
-                )
+                SessionSummaryCard(session: snapshot.currentSession)
 
                 UsageCard(
                     title: "Week",
-                    value: snapshot.weekly.limit.map { DisplayFormatters.percent($0.usedPercent) } ?? DisplayFormatters.tokens(snapshot.weekly.totalTokens),
-                    caption: snapshot.weekly.limit == nil ? "estimated tokens" : "quota used",
+                    value: snapshot.weekly.activeLimit.map { DisplayFormatters.percent($0.usedPercent) } ?? DisplayFormatters.tokens(snapshot.weekly.totalTokens),
+                    caption: snapshot.weekly.activeLimit == nil ? "estimated tokens" : "quota used",
                     symbol: "calendar",
                     accent: .indigo,
-                    progress: boundedProgress(snapshot.weekly.limit?.usedPercent ?? 0)
+                    progress: snapshot.weekly.activeLimit?.progress ?? 0
                 )
             }
             .frame(height: AppLayout.summaryHeight)
@@ -41,16 +35,18 @@ struct ContentView: View {
             RecentSessionsCard(sessions: snapshot.recentSessions)
                 .frame(height: AppLayout.recentHeight)
 
-            WeeklyAnalysisCard(
-                state: store.weeklyAnalysisState,
-                isRefreshing: store.isRefreshingWeeklyAnalysis
-            ) {
-                Task { await store.refreshWeeklyAnalysis() }
+            if enableWeeklyCodexAnalysis {
+                WeeklyAnalysisCard(
+                    state: store.weeklyAnalysisState,
+                    isRefreshing: store.isRefreshingWeeklyAnalysis
+                ) {
+                    Task { await store.refreshWeeklyAnalysis() }
+                }
+                .frame(height: AppLayout.analysisHeight)
             }
-            .frame(height: AppLayout.analysisHeight)
         }
         .padding(20)
-        .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight, alignment: .top)
+        .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight(showWeeklyAnalysis: enableWeeklyCodexAnalysis), alignment: .top)
         .background(WindowBackground())
         .containerBackground(Color.tokenFlowWindowBackground, for: .window)
         .toolbar {
@@ -92,22 +88,18 @@ struct ContentView: View {
             }
         }
         .clipped()
-    }
-
-    private func contextProgress(_ session: SessionUsageSnapshot) -> Double {
-        guard session.contextWindow > 0 else { return 0 }
-        return min(Double(session.total.total) / Double(session.contextWindow), 1)
+        .task(id: enableWeeklyCodexAnalysis) {
+            guard enableWeeklyCodexAnalysis else { return }
+            await store.refreshWeeklyAnalysisIfNeeded()
+        }
     }
 
     private func sessionUsageProgress(_ session: SessionUsageSnapshot) -> Double {
-        if let limit = session.primaryLimit {
-            return boundedProgress(limit.usedPercent)
-        }
-        return contextProgress(session)
+        session.progress
     }
 
-    private func boundedProgress(_ percent: Double) -> Double {
-        min(max(percent / 100, 0), 1)
+    private func sessionSecondaryUsageProgress(_ session: SessionUsageSnapshot) -> Double {
+        session.activeSecondaryLimit?.progress ?? 0
     }
 }
 
@@ -210,10 +202,91 @@ private struct UsageCard: View {
     }
 }
 
+private struct SessionSummaryCard: View {
+    var session: SessionUsageSnapshot
+
+    var body: some View {
+        Card {
+            VStack(alignment: .leading, spacing: 10) {
+                HStack(alignment: .top, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        Label("Session", systemImage: "terminal")
+                            .font(.callout.weight(.medium))
+                            .foregroundStyle(.secondary)
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(DisplayFormatters.exactTokens(session.total.total))
+                                .font(.system(size: 30, weight: .semibold, design: .rounded))
+                                .monospacedDigit()
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.58)
+                                .contentTransition(.numericText(value: Double(session.total.total)))
+                                .animation(.snappy(duration: 0.45), value: session.total.total)
+                            Text("tokens tracked")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+
+                    Spacer()
+
+                    if let primaryLimit = session.activePrimaryLimit {
+                        SessionLimitRing(
+                            title: "Primary",
+                            value: DisplayFormatters.percent(primaryLimit.usedPercent),
+                            progress: primaryLimit.progress,
+                            tint: .teal
+                        )
+                    }
+
+                    if let secondaryLimit = session.activeSecondaryLimit {
+                        SessionLimitRing(
+                            title: "5.3 fallback",
+                            value: DisplayFormatters.percent(secondaryLimit.usedPercent),
+                            progress: secondaryLimit.progress,
+                            tint: .indigo
+                        )
+                    }
+                }
+            }
+        }
+        .frame(maxHeight: .infinity)
+    }
+}
+
+private struct SessionLimitRing: View {
+    var title: String
+    var value: String
+    var progress: Double
+    var tint: Color
+
+    var body: some View {
+        VStack(spacing: 6) {
+            Text(title)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            AppCircularProgress(progress: progress, tint: tint) {
+                Text(value)
+                    .font(.caption2.weight(.semibold))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(width: 70, height: 70)
+        }
+    }
+}
+
 private struct SessionDetailCard: View {
     var session: SessionUsageSnapshot
 
     var body: some View {
+        let largestTokenCategory = max(
+            session.total.input,
+            session.total.cachedInput,
+            session.total.output,
+            session.total.reasoningOutput,
+            1
+        )
+
         Card {
             VStack(alignment: .leading, spacing: 10) {
                 HStack {
@@ -225,12 +298,13 @@ private struct SessionDetailCard: View {
                             .foregroundStyle(.secondary)
                     }
                     Spacer()
-                    LimitBadge(limit: session.primaryLimit)
+                    LimitBadge(limit: session.activePrimaryLimit)
                 }
 
                 TokenBar(
                     label: "Input",
                     value: session.total.input,
+                    scale: largestTokenCategory,
                     total: session.total.total,
                     tint: .teal,
                     help: "Input tokens are the tokens sent to the model, including your messages, tool context, files, and instructions."
@@ -238,6 +312,7 @@ private struct SessionDetailCard: View {
                 TokenBar(
                     label: "Cache",
                     value: session.total.cachedInput,
+                    scale: largestTokenCategory,
                     total: session.total.total,
                     tint: .mint,
                     help: "Cache tokens are input tokens reused from a previous request instead of processed as fresh context."
@@ -245,6 +320,7 @@ private struct SessionDetailCard: View {
                 TokenBar(
                     label: "Output",
                     value: session.total.output,
+                    scale: largestTokenCategory,
                     total: session.total.total,
                     tint: .orange,
                     help: "Output tokens are the tokens written back by the model in its visible response."
@@ -252,6 +328,7 @@ private struct SessionDetailCard: View {
                 TokenBar(
                     label: "Reasoning",
                     value: session.total.reasoningOutput,
+                    scale: largestTokenCategory,
                     total: session.total.total,
                     tint: .purple,
                     help: "Reasoning tokens are internal thinking tokens used by reasoning models before they produce the visible response."
@@ -285,7 +362,7 @@ private struct WeeklyCard: View {
                             .foregroundStyle(.secondary)
                     }
                     Spacer()
-                    LimitBadge(limit: weekly.limit)
+                    LimitBadge(limit: weekly.activeLimit)
                 }
 
                 HStack(alignment: .lastTextBaseline, spacing: 6) {
@@ -433,30 +510,35 @@ private struct WeeklyAnalysisCard: View {
 private struct TokenBar: View {
     var label: String
     var value: Int
+    var scale: Int
     var total: Int
     var tint: Color
     var help: String
 
     var body: some View {
-        let progress = total > 0 ? Double(value) / Double(total) : 0
+        let progress = scale > 0 ? Double(value) / Double(scale) : 0
+        let share = total > 0 ? Double(value) / Double(total) * 100 : 0
 
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text(label)
                     .font(.caption.weight(.medium))
                 Spacer()
-                Text(DisplayFormatters.tokens(value))
+                Text("\(DisplayFormatters.tokens(value)), \(DisplayFormatters.tokenSharePercent(share))")
                     .font(.caption.monospacedDigit())
                     .foregroundStyle(.secondary)
             }
             GeometryReader { proxy in
+                let clamped = min(max(progress, 0), 1)
+                let visibleProgress = value > 0 ? max(clamped, 0.045) : 0
+
                 ZStack(alignment: .leading) {
                     Capsule()
                         .fill(Color.black.opacity(0.07))
 
                     Capsule()
                         .fill(tint.gradient)
-                        .frame(width: proxy.size.width * min(max(progress, 0), 1))
+                        .frame(width: proxy.size.width * visibleProgress)
                 }
             }
             .frame(height: 14)

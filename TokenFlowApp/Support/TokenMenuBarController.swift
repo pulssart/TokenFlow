@@ -39,7 +39,7 @@ final class TokenMenuBarController: NSObject {
         addDisabled("\(remainingText(snapshot.sessionRemainingPercent)) remaining", to: menu)
         addDisabled("Total \(DisplayFormatters.tokens(snapshot.currentSession.total.total))", to: menu)
         addDisabled("Last turn \(DisplayFormatters.tokens(snapshot.currentSession.last.total))", to: menu)
-        addDisabled("Reset \(DisplayFormatters.absoluteDate(snapshot.currentSession.primaryLimit?.resetsAt))", to: menu)
+        addDisabled("Reset \(DisplayFormatters.absoluteDate(snapshot.currentSession.activePrimaryLimit?.resetsAt))", to: menu)
 
         menu.addItem(.separator())
 
@@ -48,7 +48,7 @@ final class TokenMenuBarController: NSObject {
         addDisabled("Total \(DisplayFormatters.tokens(snapshot.weekly.totalTokens))", to: menu)
         addDisabled("Input \(DisplayFormatters.tokens(snapshot.weekly.inputTokens))", to: menu)
         addDisabled("Output \(DisplayFormatters.tokens(snapshot.weekly.outputTokens))", to: menu)
-        addDisabled("Reset \(DisplayFormatters.absoluteDate(snapshot.weekly.limit?.resetsAt))", to: menu)
+        addDisabled("Reset \(DisplayFormatters.absoluteDate(snapshot.weekly.activeLimit?.resetsAt))", to: menu)
 
         menu.addItem(.separator())
         menu.addItem(actionItem("Refresh", action: #selector(refresh)))

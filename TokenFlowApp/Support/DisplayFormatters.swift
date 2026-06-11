@@ -1,6 +1,14 @@
 import Foundation
 
 enum DisplayFormatters {
+    private static let exactNumberFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.groupingSeparator = " "
+        formatter.locale = Locale(identifier: "fr_FR")
+        return formatter
+    }()
+
     static func tokens(_ value: Int) -> String {
         if value >= 1_000_000 {
             return String(format: "%.1f M", Double(value) / 1_000_000)
@@ -11,8 +19,19 @@ enum DisplayFormatters {
         return "\(value)"
     }
 
+    static func exactTokens(_ value: Int) -> String {
+        exactNumberFormatter.string(from: NSNumber(value: value)) ?? "\(value)"
+    }
+
     static func percent(_ value: Double) -> String {
         "\(Int(value.rounded())) %"
+    }
+
+    static func tokenSharePercent(_ value: Double) -> String {
+        if value > 0, value < 1 {
+            return String(format: "%.1f %%", value)
+        }
+        return percent(value)
     }
 
     static func date(_ value: Date?) -> String {

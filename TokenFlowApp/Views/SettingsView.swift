@@ -4,6 +4,7 @@ struct SettingsView: View {
     @EnvironmentObject private var store: TokenUsageStore
     @AppStorage(AppPreferenceKeys.showMenuBarExtra) private var showMenuBarExtra = true
     @AppStorage(AppPreferenceKeys.enableNotifications) private var enableNotifications = true
+    @AppStorage(AppPreferenceKeys.enableWeeklyCodexAnalysis) private var enableWeeklyCodexAnalysis = false
     @AppStorage(AppPreferenceKeys.onboardingCompleted) private var onboardingCompleted = false
 
     var body: some View {
@@ -30,7 +31,11 @@ struct SettingsView: View {
             }
 
             ConnectionSettingsCard(snapshot: snapshot.auth, plan: snapshot.currentSession.planType)
-            PreferencesSettingsCard(showMenuBarExtra: $showMenuBarExtra, enableNotifications: $enableNotifications)
+            PreferencesSettingsCard(
+                showMenuBarExtra: $showMenuBarExtra,
+                enableNotifications: $enableNotifications,
+                enableWeeklyCodexAnalysis: $enableWeeklyCodexAnalysis
+            )
             OnboardingSettingsCard(onboardingCompleted: $onboardingCompleted)
         }
         .padding(20)
@@ -40,6 +45,10 @@ struct SettingsView: View {
             guard isEnabled else { return }
             TokenNotificationManager.shared.requestAuthorization()
             Task { await store.refresh() }
+        }
+        .onChange(of: enableWeeklyCodexAnalysis) { _, isEnabled in
+            guard isEnabled else { return }
+            Task { await store.refreshWeeklyAnalysisIfNeeded() }
         }
     }
 }
@@ -112,6 +121,7 @@ private struct ConnectionSettingsCard: View {
 private struct PreferencesSettingsCard: View {
     @Binding var showMenuBarExtra: Bool
     @Binding var enableNotifications: Bool
+    @Binding var enableWeeklyCodexAnalysis: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -120,6 +130,7 @@ private struct PreferencesSettingsCard: View {
 
             Toggle("Show menu bar item", isOn: $showMenuBarExtra)
             Toggle("Enable notifications", isOn: $enableNotifications)
+            Toggle("Weekly Codex analysis", isOn: $enableWeeklyCodexAnalysis)
         }
         .toggleStyle(.switch)
         .padding(16)

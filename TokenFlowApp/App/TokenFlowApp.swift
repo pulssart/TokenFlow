@@ -3,8 +3,10 @@ import SwiftUI
 
 @main
 struct TokenFlowApp: App {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var store = TokenUsageStore()
     @AppStorage(AppPreferenceKeys.showMenuBarExtra) private var showMenuBarExtra = true
+    @AppStorage(AppPreferenceKeys.enableWeeklyCodexAnalysis) private var enableWeeklyCodexAnalysis = false
     @AppStorage(AppPreferenceKeys.onboardingCompleted) private var onboardingCompleted = false
 
     var body: some Scene {
@@ -19,7 +21,7 @@ struct TokenFlowApp: App {
                 }
             }
                 .environmentObject(store)
-                .frame(width: AppLayout.windowWidth, height: AppLayout.windowHeight)
+                .frame(width: AppLayout.windowWidth, height: mainWindowHeight)
                 .onAppear {
                     TokenMenuBarController.shared.setVisible(showMenuBarExtra, store: store)
                     TokenMenuBarController.shared.update(snapshot: store.snapshot)
@@ -33,6 +35,10 @@ struct TokenFlowApp: App {
                 .task {
                     TokenNotificationManager.shared.requestAuthorization()
                     await store.startAutomaticRefresh()
+                }
+                .onChange(of: scenePhase) { _, phase in
+                    guard phase == .active else { return }
+                    Task { await store.refresh() }
                 }
         }
         .defaultSize(width: AppLayout.windowWidth, height: AppLayout.windowHeight)
@@ -64,21 +70,26 @@ enum AppLayout {
     static let recentHeight: CGFloat = 160
     static let analysisHeight: CGFloat = 148
     static let settingsWidth: CGFloat = 440
-    static let settingsHeight: CGFloat = 430
+    static let settingsHeight: CGFloat = 466
+
+    static func windowHeight(showWeeklyAnalysis: Bool) -> CGFloat {
+        showWeeklyAnalysis ? windowHeight : windowHeight - analysisHeight - 12
+    }
+}
+
+private extension TokenFlowApp {
+    var mainWindowHeight: CGFloat {
+        onboardingCompleted ? AppLayout.windowHeight(showWeeklyAnalysis: enableWeeklyCodexAnalysis) : AppLayout.windowHeight
+    }
 }
 
 extension TokenFlowSnapshot {
     var sessionRemainingPercent: Double {
-        if let limit = currentSession.primaryLimit {
-            return max(0, 100 - limit.usedPercent)
-        }
-        guard currentSession.contextWindow > 0 else { return 100 }
-        let used = Double(currentSession.total.total) / Double(currentSession.contextWindow) * 100
-        return max(0, 100 - used)
+        max(0, 100 - currentSession.usedPercent)
     }
 
     var weekRemainingPercent: Double {
-        if let limit = weekly.limit {
+        if let limit = weekly.activeLimit {
             return max(0, 100 - limit.usedPercent)
         }
         return weekly.totalTokens > 0 ? 100 : 100
