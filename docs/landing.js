@@ -11,7 +11,7 @@
     en: {
       'nav.features': 'Features', 'nav.widgets': 'Widgets', 'nav.setup': 'Setup', 'nav.download': 'Download',
       'hero.eyebrow': 'macOS · Codex token tracker',
-      'hero.title': 'Every Codex token,<br/>in one <em>quiet</em> window.',
+      'hero.title': 'See the session limit coming,<br/>keep <em>control</em>.',
       'hero.sub': 'TokenFlow reads your local Codex history and shows session, weekly and per-category token usage at a glance — a native macOS app with widgets and a menu-bar status item.',
       'hero.download': 'Download for macOS', 'hero.github': 'View on GitHub',
       'hero.meta': 'Free · Signed & notarized DMG · Apple Silicon & Intel',
@@ -40,7 +40,7 @@
     fr: {
       'nav.features': 'Fonctionnalités', 'nav.widgets': 'Widgets', 'nav.setup': 'Installation', 'nav.download': 'Télécharger',
       'hero.eyebrow': 'macOS · Suivi des tokens Codex',
-      'hero.title': 'Chaque token Codex,<br/>dans une fenêtre <em>épurée</em>.',
+      'hero.title': 'Vois la fin de session arriver,<br/>garde le <em>contrôle</em>.',
       'hero.sub': 'TokenFlow lit votre historique Codex local et affiche l’usage par session, par semaine et par catégorie en un coup d’œil — une application macOS native avec widgets et barre de menus.',
       'hero.download': 'Télécharger pour macOS', 'hero.github': 'Voir sur GitHub',
       'hero.meta': 'Gratuit · DMG signé et notarisé · Apple Silicon & Intel',
