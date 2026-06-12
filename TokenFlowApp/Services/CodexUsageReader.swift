@@ -158,9 +158,9 @@ struct CodexUsageReader {
 
     private func buildWeeklySnapshot(from sessions: [SessionAccumulator], latestLimit: LimitSnapshot?) -> WeeklyUsageSnapshot {
         let now = Date()
-        let interval = calendar.dateInterval(of: .weekOfYear, for: now)
-        let weekStart = interval?.start ?? now.addingTimeInterval(-60 * 60 * 24 * 7)
-        let weekEnd = interval?.end ?? now
+        let window = weeklyWindow(for: latestLimit, now: now)
+        let weekStart = window.start
+        let weekEnd = window.end
         var totalsByDay: [String: Int] = [:]
         var total = TokenUsage.zero
         var count = 0
@@ -195,6 +195,22 @@ struct CodexUsageReader {
             dailyTotals: daily,
             limit: latestLimit
         )
+    }
+
+    private func weeklyWindow(for latestLimit: LimitSnapshot?, now: Date) -> DateInterval {
+        if let latestLimit,
+           let resetsAt = latestLimit.resetsAt,
+           latestLimit.windowMinutes > 0,
+           resetsAt > now {
+            let start = resetsAt.addingTimeInterval(TimeInterval(-latestLimit.windowMinutes * 60))
+            return DateInterval(start: start, end: resetsAt)
+        }
+
+        if let interval = calendar.dateInterval(of: .weekOfYear, for: now) {
+            return interval
+        }
+
+        return DateInterval(start: now.addingTimeInterval(-60 * 60 * 24 * 7), end: now)
     }
 
     private func idFromFileName(_ url: URL) -> String {
