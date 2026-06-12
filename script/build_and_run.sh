@@ -36,6 +36,9 @@ APP_BUNDLE="$TARGET_BUILD_DIR/$APP_NAME.app"
 install_app() {
   mkdir -p "$INSTALL_DIR"
   if [[ -d "$INSTALLED_APP" ]]; then
+    if [[ -d "$INSTALLED_APP/Contents/PlugIns/TokenFlowWidgets.appex" ]]; then
+      /usr/bin/pluginkit -r "$INSTALLED_APP/Contents/PlugIns/TokenFlowWidgets.appex" >/dev/null 2>&1 || true
+    fi
     /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -u "$INSTALLED_APP" >/dev/null 2>&1 || true
   fi
   rm -rf "$INSTALLED_APP"
