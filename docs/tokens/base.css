@@ -1,0 +1,60 @@
+/* TokenFlow — Base layer
+   Minimal reset + page defaults that bind the tokens to real elements. Consumers
+   get a dark, Geist-typeset canvas out of the box. */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface-page);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--lh-normal);
+  font-feature-settings: var(--num-tabular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5 {
+  margin: 0;
+  font-weight: var(--fw-semibold);
+  letter-spacing: var(--track-tight);
+  line-height: var(--lh-tight);
+  color: var(--text-heading);
+}
+
+p { margin: 0; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; }
+
+::selection {
+  background: rgba(31,214,224,0.3);
+  color: #fff;
+}
+
+/* Mono / numeric helper */
+.mono { font-family: var(--font-mono); font-feature-settings: var(--num-tabular); }
+
+/* Eyebrow / overline */
+.eyebrow {
+  font-size: var(--text-2xs);
+  letter-spacing: var(--track-caps);
+  text-transform: uppercase;
+  font-weight: var(--fw-medium);
+  color: var(--text-tertiary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

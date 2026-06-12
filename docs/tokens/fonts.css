@@ -1,0 +1,10 @@
+/* TokenFlow webfonts
+   ---------------------------------------------------------------
+   The native macOS app uses SF Pro / SF Pro Rounded (system, proprietary,
+   not redistributable). For the web we ship Geist + Geist Mono — Vercel's
+   open-source developer typeface — as the closest modern, shippable match.
+   Loaded from the Google Fonts CDN (OFL licensed). If you need a fully
+   offline bundle, download the woff2 binaries and replace the @import below
+   with local @font-face rules. */
+
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500;600&display=swap');

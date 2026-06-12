@@ -1,0 +1,30 @@
+/* TokenFlow — Effects: shadows, blur, motion
+   The app stays flat and matte: cards are separated by surface lift + a 1px
+   hairline rather than heavy drop shadows. Real depth only appears on the
+   floating macOS window and on toolbar pills. Motion is restrained — Apple
+   "snappy" spring for value changes, short eases for hovers. */
+
+:root {
+  /* ---- Shadows ---- */
+  --shadow-none: none;
+  --shadow-card: 0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-pill: 0 1px 1px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.06) inset;
+  --shadow-window: 0 40px 80px -20px rgba(0,0,0,0.7), 0 12px 32px -8px rgba(0,0,0,0.5);
+  --shadow-pop: 0 16px 40px -12px rgba(0,0,0,0.6);
+  /* Luminous glow used sparingly behind the hero / primary CTA */
+  --glow-cyan: 0 0 60px -8px rgba(31,214,224,0.45);
+  --glow-indigo: 0 0 80px -10px rgba(94,92,230,0.5);
+
+  /* ---- Blur ---- */
+  --blur-sm: 8px; /* @kind other */
+  --blur-md: 18px; /* @kind other */
+  --blur-lg: 40px; /* @kind other */
+
+  /* ---- Motion ---- */
+  --ease-snappy: cubic-bezier(0.2, 0.9, 0.25, 1); /* @kind other */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1); /* @kind other */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+  --dur-fast: 120ms; /* @kind other */
+  --dur-base: 220ms; /* @kind other */
+  --dur-slow: 450ms; /* @kind other */
+}

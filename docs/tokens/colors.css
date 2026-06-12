@@ -1,0 +1,63 @@
+/* TokenFlow — Color tokens
+   Dark-first. Sampled from the macOS SwiftUI app (ContentView.swift) and the
+   shipped app screenshots. The app is dark-native: a near-black window with
+   slightly lifted cards and a luminous data palette (cyan → indigo) for token
+   categories. The brand mark is indigo/periwinkle. */
+
+:root {
+  /* ---- Base neutrals (dark) ---- */
+  --black: #000000;
+  --bg-window: #141414;       /* SwiftUI calibratedWhite 0.08 — app window */
+  --bg-deep: #0d0d0e;         /* deeper than window, for page backdrops */
+  --bg-card: #1b1b1d;         /* lifted card surface (textBackgroundColor dark) */
+  --bg-card-2: #202023;       /* nested / hover card */
+  --bg-elevated: #2a2a2e;     /* toolbar pills, controls */
+  --track: rgba(255,255,255,0.07);   /* empty progress / bar track */
+
+  /* ---- Text ---- */
+  --text-primary: #f5f5f7;
+  --text-secondary: rgba(235,235,245,0.62);
+  --text-tertiary: rgba(235,235,245,0.34);
+  --text-quaternary: rgba(235,235,245,0.2);
+  --text-on-accent: #07181a;  /* dark text that sits on a bright cyan fill */
+
+  /* ---- Hairlines & borders ---- */
+  --border-subtle: rgba(255,255,255,0.07);
+  --border-default: rgba(255,255,255,0.1);
+  --border-strong: rgba(255,255,255,0.16);
+
+  /* ---- Brand ---- */
+  --brand-indigo: #5e5ce6;        /* logo / week accent */
+  --brand-periwinkle: #6f70ea;    /* logo gradient top */
+  --brand-cyan: #1fd6e0;          /* primary data accent (Input / Session) */
+
+  /* ---- Data / category accents (from token bars + rings) ---- */
+  --accent-cyan: #1fd6e0;     /* Input · Primary ring */
+  --accent-mint: #2fe3bd;     /* Cache */
+  --accent-orange: #ff9f0a;   /* Output */
+  --accent-magenta: #e455cc;  /* Reasoning */
+  --accent-indigo: #5e5ce6;   /* Week · 5.3 fallback ring */
+
+  /* ---- Soft tints (rings / fills behind data) ---- */
+  --tint-cyan: rgba(31,214,224,0.16);
+  --tint-indigo: rgba(94,92,230,0.16);
+
+  /* ---- Signature gradient (daily bars: teal → indigo) ---- */
+  --grad-flow: linear-gradient(180deg, var(--brand-indigo) 0%, var(--brand-cyan) 100%); /* @kind color */
+  --grad-flow-h: linear-gradient(90deg, var(--brand-cyan) 0%, var(--brand-indigo) 100%); /* @kind color */
+  --grad-cyan: linear-gradient(180deg, #54e6ee 0%, #1fd6e0 100%); /* @kind color */
+
+  /* ---- Semantic aliases ---- */
+  --surface-page: var(--bg-deep);
+  --surface-window: var(--bg-window);
+  --surface-card: var(--bg-card);
+  --surface-control: var(--bg-elevated);
+  --text-body: var(--text-secondary);
+  --text-heading: var(--text-primary);
+  --focus-ring: var(--brand-cyan);
+
+  /* ---- Status ---- */
+  --danger: #ff453a;
+  --success: #2fe3bd;
+  --warning: #ff9f0a;
+}

@@ -1,0 +1,50 @@
+/* TokenFlow — Typography tokens
+   App UI is SF Pro / SF Pro Rounded (numerals use the rounded design, semibold,
+   monospaced digits). On the web we use Geist for text and Geist Mono for
+   token counts / code. Numerals everywhere use tabular figures so digits don't
+   jump while counters animate. */
+
+:root {
+  /* ---- Families ---- */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'SF Pro Text', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'SF Mono', ui-monospace, 'JetBrains Mono', Menlo, monospace;
+  /* The native app renders big numbers in SF Pro Rounded. On Apple devices the
+     system stack picks that up; elsewhere Geist is the fallback. */
+  --font-rounded: -apple-system, 'SF Pro Rounded', 'Geist', system-ui, sans-serif;
+
+  /* ---- Weights ---- */
+  --fw-light: 300; /* @kind font */
+  --fw-regular: 400; /* @kind font */
+  --fw-medium: 500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold: 700; /* @kind font */
+  --fw-extrabold: 800; /* @kind font */
+
+  /* ---- Type scale (landing / marketing) ---- */
+  --text-display: 76px;   /* hero headline */
+  --text-h1: 52px;
+  --text-h2: 38px;
+  --text-h3: 27px;
+  --text-title: 21px;
+  --text-body-lg: 18px;
+  --text-base: 16px;
+  --text-sm: 14px;
+  --text-xs: 13px;
+  --text-2xs: 11px;       /* caption / label */
+
+  /* ---- Line heights ---- */
+  --lh-tight: 1.04; /* @kind font */
+  --lh-snug: 1.18; /* @kind font */
+  --lh-normal: 1.5; /* @kind font */
+  --lh-relaxed: 1.65; /* @kind font */
+
+  /* ---- Tracking ---- */
+  --track-tight: -0.03em; /* @kind font */
+  --track-snug: -0.015em; /* @kind font */
+  --track-normal: 0; /* @kind font */
+  --track-wide: 0.04em; /* @kind font */
+  --track-caps: 0.12em; /* @kind font */
+
+  /* ---- Numeric figures ---- */
+  --num-tabular: "tnum" 1, "lnum" 1; /* @kind font */
+}

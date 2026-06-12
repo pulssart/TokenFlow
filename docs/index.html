@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en" data-mood="balanced" data-accent="cyan" data-rhythm="editorial">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TokenFlow — Codex token tracker for macOS</title>
+<meta name="description" content="TokenFlow reads your local Codex history and shows session, weekly and per-category token usage at a glance — a native macOS app with widgets and a menu-bar status item." />
+<meta property="og:title" content="TokenFlow — Codex token tracker for macOS" />
+<meta property="og:description" content="Every Codex token, in one quiet window. Native macOS app with widgets and a menu-bar status item." />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="assets/screens/app-window.png" />
+<link rel="icon" href="assets/icons/tokenflow-icon-256.png" />
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="landing.css?v=20260612" />
+</head>
+<body>
+<div class="page">
+
+  <!-- ░░ NAV ░░ -->
+  <header class="nav" id="nav">
+    <a class="brand" href="#top" aria-label="TokenFlow">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 40 40" fill="none">
+          <defs>
+            <linearGradient id="bm" x1="6" y1="4" x2="34" y2="36" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#7d7ef0"/><stop offset="1" stop-color="#5b59e4"/>
+            </linearGradient>
+          </defs>
+          <circle cx="16" cy="16" r="11" stroke="url(#bm)" stroke-width="3.4"/>
+          <circle cx="25" cy="25" r="11" stroke="url(#bm)" stroke-width="3.4"/>
+          <rect x="11.7" y="11.7" width="8.6" height="8.6" rx="1.6" transform="rotate(45 16 16)" stroke="url(#bm)" stroke-width="3.2"/>
+        </svg>
+      </span>
+      <span class="brand__name">TokenFlow</span>
+    </a>
+
+    <nav class="nav__links">
+      <a href="#features" data-i18n="nav.features">Features</a>
+      <a href="#widgets" data-i18n="nav.widgets">Widgets</a>
+      <a href="#setup" data-i18n="nav.setup">Setup</a>
+    </nav>
+
+    <div class="nav__actions">
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn is-active" data-lang="en">EN</button>
+        <button class="lang__btn" data-lang="fr">FR</button>
+      </div>
+      <a class="nav__github" href="https://github.com/pulssart/TokenFlow" target="_blank" rel="noopener" aria-label="GitHub">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"><path d="M12 1.5A10.5 10.5 0 0 0 8.68 22a.55.55 0 0 0 .73-.53v-1.86c-2.92.63-3.54-1.4-3.54-1.4-.48-1.22-1.17-1.54-1.17-1.54-.96-.65.07-.64.07-.64 1.06.08 1.62 1.09 1.62 1.09.94 1.61 2.47 1.15 3.07.88.1-.68.37-1.15.67-1.41-2.33-.27-4.78-1.17-4.78-5.2 0-1.15.41-2.09 1.08-2.82-.11-.27-.47-1.34.1-2.79 0 0 .88-.28 2.88 1.08a10 10 0 0 1 5.24 0c2-1.36 2.88-1.08 2.88-1.08.57 1.45.21 2.52.1 2.79.67.73 1.08 1.67 1.08 2.82 0 4.04-2.46 4.93-4.8 5.19.38.33.71.97.71 1.96v2.9c0 .29.19.63.74.52A10.5 10.5 0 0 0 12 1.5Z"/></svg>
+      </a>
+      <a class="btn btn--primary btn--sm nav__dl" id="navDownload" href="https://github.com/pulssart/TokenFlow/releases/latest" data-i18n="nav.download">Download</a>
+    </div>
+  </header>
+
+  <!-- ░░ HERO ░░ -->
+  <main id="top">
+    <section class="hero">
+      <div class="hero__copy">
+        <span class="eyebrow" data-i18n="hero.eyebrow">macOS · Codex token tracker</span>
+        <h1 class="hero__title" data-i18n-html="hero.title">Every Codex token,<br/>in one <em>quiet</em> window.</h1>
+        <p class="hero__sub" data-i18n="hero.sub">TokenFlow reads your local Codex history and shows session, weekly and per-category token usage at a glance — a native macOS app with widgets and a menu-bar status item.</p>
+
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg" id="heroDownload" href="https://github.com/pulssart/TokenFlow/releases/latest">
+            <svg class="btn__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l4.5-4.5M12 15l-4.5-4.5"/><path d="M4 21h16"/></svg>
+            <span data-i18n="hero.download">Download for macOS</span>
+          </a>
+          <a class="btn btn--ghost btn--lg" href="https://github.com/pulssart/TokenFlow" target="_blank" rel="noopener" data-i18n="hero.github">View on GitHub</a>
+        </div>
+
+        <p class="hero__meta mono" id="dlMeta" data-i18n="hero.meta">Free · Signed &amp; notarized DMG · Apple Silicon &amp; Intel</p>
+      </div>
+
+      <div class="hero__art">
+        <div class="hero__glow" aria-hidden="true"></div>
+        <figure class="window">
+          <img src="assets/screens/app-window.png" alt="TokenFlow app window showing session and weekly Codex token usage" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- ░░ MARQUEE / SIGNALS ░░ -->
+    <section class="signals">
+      <div class="signal"><span class="signal__n mono">4</span><span class="signal__l" data-i18n="sig.types">token types tracked</span></div>
+      <div class="signal"><span class="signal__n mono">100%</span><span class="signal__l" data-i18n="sig.local">local — reads your own history</span></div>
+      <div class="signal"><span class="signal__n mono">0</span><span class="signal__l" data-i18n="sig.account">accounts, no sign-up</span></div>
+      <div class="signal"><span class="signal__n mono">macOS</span><span class="signal__l" data-i18n="sig.native">native · widgets · menu bar</span></div>
+    </section>
+
+    <!-- ░░ FEATURES ░░ -->
+    <section class="section" id="features">
+      <div class="section__head">
+        <span class="eyebrow" data-i18n="feat.eyebrow">What it shows</span>
+        <h2 class="section__title" data-i18n="feat.title">A full read on your Codex usage.</h2>
+      </div>
+
+      <div class="features">
+        <article class="feature feature--wide">
+          <div class="feature__text">
+            <h3 data-i18n="feat.session.t">Live session breakdown</h3>
+            <p data-i18n="feat.session.d">Input, cache, output and reasoning tokens for the current session — with the share of total and a live counter that updates as you work.</p>
+          </div>
+          <img class="feature__shot" src="assets/screens/session-codex-bloc.png" alt="Session Codex token breakdown" />
+        </article>
+
+        <article class="feature">
+          <div class="feature__text">
+            <h3 data-i18n="feat.week.t">Weekly quota</h3>
+            <p data-i18n="feat.week.d">Track the weekly limit Codex exposes, with daily bars and reset times.</p>
+          </div>
+          <img class="feature__shot" src="assets/screens/week-bloc.png" alt="Weekly Codex usage" />
+        </article>
+
+        <article class="feature">
+          <div class="feature__text">
+            <h3 data-i18n="feat.summary.t">Session at a glance</h3>
+            <p data-i18n="feat.summary.d">Total tokens tracked plus primary and fallback session limits as rings.</p>
+          </div>
+          <img class="feature__shot" src="assets/screens/session-bloc.png" alt="Session summary rings" />
+          <p class="feature__note" data-i18n="feat.summary.note">A non-zero value always keeps a visible sliver — so a glance is never empty.</p>
+          <dl class="feature__legend mono">
+            <div><dt><i class="dot" style="background:var(--accent-cyan)"></i><span data-i18n="feat.summary.r1">Primary</span></dt><dd>3&#8239;%</dd></div>
+            <div><dt><i class="dot" style="background:var(--accent-indigo)"></i><span data-i18n="feat.summary.r2">Fallback 5.3</span></dt><dd>1&#8239;%</dd></div>
+          </dl>
+        </article>
+
+        <article class="feature feature--text">
+          <div class="feature__icon" data-icon="bell"></div>
+          <h3 data-i18n="feat.notify.t">Menu bar &amp; notifications</h3>
+          <p data-i18n="feat.notify.d">An optional status item keeps usage one glance away, with notifications when you approach a limit.</p>
+        </article>
+
+        <article class="feature feature--text">
+          <div class="feature__icon" data-icon="list"></div>
+          <h3 data-i18n="feat.recent.t">Recent sessions</h3>
+          <p data-i18n="feat.recent.d">The latest work threads from your Codex history, with the tokens each one consumed.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- ░░ WIDGETS ░░ -->
+    <section class="section section--alt" id="widgets">
+      <div class="section__head">
+        <span class="eyebrow" data-i18n="wid.eyebrow">On your desktop</span>
+        <h2 class="section__title" data-i18n="wid.title">Native widgets, always in view.</h2>
+        <p class="section__lede" data-i18n="wid.lede">Drop a TokenFlow widget into Notification Center to keep session and weekly usage glanceable — without opening the app.</p>
+      </div>
+      <figure class="widget-stage">
+        <img src="assets/screens/widgets-desktop.png" alt="TokenFlow widgets on the macOS desktop — session and weekly usage rings, reset timers, daily bars and the output breakdown, all in Notification Center" />
+      </figure>
+    </section>
+
+    <!-- ░░ SETUP ░░ -->
+    <section class="section" id="setup">
+      <div class="section__head">
+        <span class="eyebrow" data-i18n="set.eyebrow">Three steps</span>
+        <h2 class="section__title" data-i18n="set.title">Up and running in a minute.</h2>
+      </div>
+      <ol class="steps">
+        <li class="step">
+          <span class="step__n mono">01</span>
+          <h3 data-i18n="set.s1.t">Download &amp; open</h3>
+          <p data-i18n="set.s1.d">Grab the signed, notarized DMG and drag TokenFlow into Applications.</p>
+        </li>
+        <li class="step">
+          <span class="step__n mono">02</span>
+          <h3 data-i18n="set.s2.t">Sign in to Codex</h3>
+          <p data-i18n="set.s2.d">TokenFlow reads local Codex data, so Codex needs to be signed in on the machine.</p>
+        </li>
+        <li class="step">
+          <span class="step__n mono">03</span>
+          <h3 data-i18n="set.s3.t">Watch the tokens</h3>
+          <p data-i18n="set.s3.d">Open the app — session, week and recent activity populate automatically.</p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- ░░ DOWNLOAD CTA ░░ -->
+    <section class="cta">
+      <div class="cta__inner">
+        <img class="cta__icon" src="assets/icons/tokenflow-icon-256.png" alt="TokenFlow icon" />
+        <h2 class="cta__title" data-i18n="cta.title">Start tracking your Codex tokens.</h2>
+        <p class="cta__sub" data-i18n="cta.sub">Free, native, and private. Your history never leaves your Mac.</p>
+        <a class="btn btn--primary btn--lg" id="ctaDownload" href="https://github.com/pulssart/TokenFlow/releases/latest">
+          <svg class="btn__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l4.5-4.5M12 15l-4.5-4.5"/><path d="M4 21h16"/></svg>
+          <span data-i18n="hero.download">Download for macOS</span>
+        </a>
+        <p class="cta__meta mono" id="ctaMeta" data-i18n="hero.meta">Free · Signed &amp; notarized DMG · Apple Silicon &amp; Intel</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ░░ FOOTER ░░ -->
+  <footer class="foot">
+    <div class="foot__brand">
+      <span class="brand__name">TokenFlow</span>
+      <span class="foot__tag" data-i18n="foot.tag">Codex token tracker for macOS</span>
+    </div>
+    <div class="foot__links">
+      <a href="https://github.com/pulssart/TokenFlow" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/pulssart/TokenFlow/releases" target="_blank" rel="noopener" data-i18n="foot.releases">Releases</a>
+      <a href="https://github.com/pulssart/TokenFlow#readme" target="_blank" rel="noopener" data-i18n="foot.docs">Docs</a>
+    </div>
+    <p class="foot__note" data-i18n="foot.note">Not affiliated with OpenAI. Reads local Codex history only.</p>
+  </footer>
+</div>
+
+<script src="landing.js"></script>
+
+</body>
+</html>
